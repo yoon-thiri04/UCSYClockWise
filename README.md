@@ -1,111 +1,57 @@
-# UCSYClockWise 🕰️
-
+# UCSYClockWise ⏰📅  
 
 ![Built with Django](https://img.shields.io/badge/Built%20With-Django-092E20?style=for-the-badge&logo=django&logoColor=white)
 ![Status](https://img.shields.io/badge/Project-In_Development-yellow?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
-----
+**Intelligent Timetable Generator for University of Computer Studies, Yangon (UCSY)**  
 
-**Timetable Generator for the University of Computer Studies, Yangon (UCSY)**
+## Introduction  
+UCSYClockWise is an automated timetable generation system designed for UCSY to streamline the complex process of scheduling lectures, labs, and instructor assignments while adhering to university-specific constraints.
 
----
+### Key Challenges Addressed:
+- Dynamic classroom allocation per semester (General/Major-specific)
+- Handling Supporting/Elective/Major/General courses with varying requirements
+- Lab room scheduling & instructor availability (on-campus or not)
+- Conflict-free timetable generation with swap/merge functionality
 
-## 📌 Overview
+## Features
 
-At UCSY, generating academic timetables every semester is a complex, manual task—balancing courses, classrooms, departments, lab availability, and instructor preferences. **UCSYClockWise** is a full-stack timetable generator designed to automate and simplify this process with accuracy, flexibility, and smart conflict resolution.
+### User Roles & Functions
+| **Role** | Responsibilities |
+|------|------------------|
+| **Staff** | Register courses, instructors (on/off-campus), classrooms (Lab/Lecture), and assign departments with courses |
+| **Admin** | Match instructors/lab room with courses, generate timetables, swap/merge slots |
+| **Instructor** | View personal and others' schedules, request temporary swaps with colleagues |
+| **Student** | View/Download their timetables |
 
----
+### Core Functionalities
+- **Smart Timetable Generation**:
+  - Auto-assigns instructors/labs based on credit hours, and availability
+  - Constraints: Remote instructors avoid early slots, lab room conflicts, max 20 hours/instructor
+- **Swap/Merge Tools**:
+  - **Swap**: Admin can reassign slots if instructors/labs are free
+  - **Merge**: Combine low-enrollment major classes into shared slots
+- **Semester-Specific Logic**:
+  - Major splits start from Semester 5 (e.g., SE, KE, CyberSecurity)
+  - General subjects (Pre-Semester 5) vs. Major/Supporting/Elective courses
 
-## 🎯 Project Goals
-
-- Automatically generate conflict-free, well-structured timetables for all semesters and majors.
-- Respect course types: **General**, **Major**, **Supporting**, and **Elective**.
-- Handle classroom and lab allocations.
-- Support course merging and slot swapping with validation.
-- Provide role-based access for **Staff**, **Admin**, **Instructor**, and **Student**.
-
----
-
-## 🧠 UCSY Course & Scheduling Logic
-
-### 🏫 Semester & Course Types
-- **General Courses**: Taught before majors are split (Sem 1–4).
-- **Major Courses**: Required based on selected majors from Sem 5 onward.
-- **Supporting & Elective Courses**: Optional, with Supporting allowing only 1 selection; no exams required.
-- Courses change type depending on the semester.  
-  _E.g.,_ `Web Development with Python` is **Major** in Sem 5, **Supporting** in Sem 7.
-
-### 🧑‍🏫 Majors at UCSY
-- Software Engineering (SE)
-- Knowledge Engineering (KE)
-- Cyber Security (CS), etc.
-
-Students split into majors from **Semester 5** onward. Before that, rooms are allocated based on entrance scores (YKPT).
-
----
-
-## 👥 User Roles & Functionalities
-
-### 1. Staff
-
-- Register:
-  - Course details (including type and credit hours)
-  - Instructor info (campus-based or not)
-  - Department responsible for each course
-  - Classroom & lab classification
-- Rules:
-  - Teachers from specific departments are fixed to specific courses (e.g., FCS handles CS, ITSM).
+- **🎓 Special Case: Semester 10**
+  - No timetable needed
+  - Students upload their resume
+  - Companies view & assign students
+  - One instructor is auto-assigned per student group
 
 ---
 
-### 2. Admin
+### Additional Modules 
+- Assignment/Event notifications (in-app messaging)
 
-- Assign:
-  - Semesters & classroom setups (e.g., KE+HPC or General)
-  - Instructors and labs to courses (only valid based on credit hours and schedule)
-- View & Generate:
-  - Filters instructor/lab availability
-  - Generates timetable using conflict-aware algorithms
-- Features:
-  - ⏳ **Swap**: Change class slots based on instructor/lab availability
-  - 🔗 **Merge**: Combine lecture slots across classrooms when student count is low
-- Other:
-  - Manual override for last-minute merges
-  - Export generated timetables
 
----
-
-### 3. Instructor
-
-- View personal and others' timetables
-- Arrange informal temporary swaps (not affecting the database)
-- Plan substitute teaching if needed
-
----
-
-### 4. Student
-
-- View/download their timetable
-- Notifications from admin/teachers about assignments, tutorials, or events
-
----
-
-### 🎓 Special Case: Semester 10
-
-- No timetable needed
-- Students upload their resume
-- Companies view & assign students
-- One instructor is auto-assigned per student group
-
----
-
-## 🔧 Tech Stack
-
+## Tech Stack
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap
-- **Backend**: Django (local environment)
-- **Database**: SQLite (Django default or customizable)
-- **Timetable Logic**: Custom logic with Django ORM and scheduling algorithms
+- **Backend**: Django
+- **Database**: SQLite
 
 ---
 
@@ -116,5 +62,7 @@ Students split into majors from **Semester 5** onward. Before that, rooms are al
 - **Backend Developers**: Yoon Thiri Aung (Me), Thet Su Lwin
 
 ---
+
+## Database Design (Django Models)
 
 
