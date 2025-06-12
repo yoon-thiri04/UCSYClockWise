@@ -1,4 +1,4 @@
-# UCSY ClockWise ⏰📅  
+# UCSY ClockWise ⏰
 
 ![Built with Django](https://img.shields.io/badge/Built%20With-Django-092E20?style=for-the-badge&logo=django&logoColor=white)
 ![Status](https://img.shields.io/badge/Project-In_Development-yellow?style=for-the-badge)
