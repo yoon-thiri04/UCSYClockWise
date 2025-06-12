@@ -54,15 +54,6 @@ UCSYClockWise is an automated timetable generation system designed for UCSY to s
 - **Database**: SQLite
 
 ---
-## 🧑‍💻 Development Team
-
-| **Role**        | **Members**                          |
-|-----------------|---------------------------------------|
-| UI/UX Design    | Soe Sett Lynn                        |
-| Frontend        | Hla Myat Thwe, Phyo Thant Kyaw       |
-| Backend         | Yoon Thiri Aung, Thet Su Lwin        |
-
----
 
 ## Database Design (Django Models)
 
