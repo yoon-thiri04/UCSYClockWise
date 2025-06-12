@@ -174,14 +174,14 @@ class Timetable_Schedule(models.Model):
     classroom = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
-        related_name='main_class'  # 👈 distinguish this reverse relation
+        related_name='main_class' 
     )
     lab_room = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name='lab_matches'  # 👈 distinguish this reverse relation
+        related_name='lab_matches'  
     )
     day = models.CharField(max_length=10)
     start_time = models.TimeField()
@@ -196,7 +196,7 @@ class Match_instructorANDcourse(models.Model):
     classroom = models.ForeignKey(
         Classroom,
         on_delete=models.CASCADE,
-        related_name='main_class_matches'  # 👈 distinguish this reverse relation
+        related_name='main_class_matches'  
     )
 
     lab_room = models.ForeignKey(
@@ -204,7 +204,7 @@ class Match_instructorANDcourse(models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name='lab_class_matches'  # 👈 distinguish this reverse relation
+        related_name='lab_class_matches'  
     )
 
     instructor = models.ForeignKey(
