@@ -1,0 +1,111 @@
+
+        .whole {
+            background-color: white;
+            border-radius: 15px;
+            line-height: 37.5px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            color: #343969;
+            font-weight: 500px;
+            font-size: 23px;
+            font-family: 'Poppins';
+        }
+
+        .title img {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .whole p {
+            font-family: 'Red Hat Display';
+            font-size: 16px;
+            font-weight: 400px;
+            letter-spacing: 0;
+            text-align: justify;
+            color: #565656;
+            padding-bottom: 0px;
+        }
+        .semester{
+        font-size: 17px;
+        font-weight: 600px;
+        color: #3DC2B9;
+        }
+
+        table.timetable-table {
+            width: 100%;
+            color: #343969;
+            border-collapse: collapse;
+            font-family: 'Inter';
+            font-size: 18px;
+        }
+
+        table.timetable-table thead {
+            background-color: #f2f2f2;
+            color: #343969;
+            opacity: 0.8;
+            font-family: 'Poppins';
+            font-weight: 300px;
+        }
+
+        table.timetable-table th,
+        table.timetable-table td {
+            padding: 10px;
+            font-weight: 600px;
+            font-size: 16px;
+        }
+
+        table.timetable-table th:first-child{
+        padding-left: 70px;
+        font-weight: 600px;
+        }
+
+        table.timetable-table td:first-child {
+            padding-left: 30px;
+            font-weight: 700px;
+        }
+
+        table.timetable-table th:last-child{
+            text-align: right;
+            padding-right: 70px;
+            font-weight: 600px;
+        }
+
+        table.timetable-table td:last-child {
+            text-align: right;
+            font-weight: 700px;
+            padding-right: 80px;
+        }
+
+        table.timetable-table td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .view-timetable-link {
+            text-decoration: none;
+            margin-right:-40px;
+            color: #5AA1FE;
+            font-size: 18px;
+            font-family: 'Inter';
+        }
+
+        .view-timetable-link:hover {
+            color: #343969 !important;
+        }
+        .link:hover{
+         color: #343969 !important;
+        }
+
+        a{
+        color: #5AA1FE;
+        font-family: 'Inter';
+        font-size: 18px;
+        }
+
+        a:hover{
+        color: #343969 !important;
+        }

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Selection Popup</title>
+    <style>
+        /* Popup overlay */
+        #popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+        /* Popup content */
+        #popup {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+        #close-btn, #done-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #close-btn:hover, #done-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Section to display selected teachers -->
+<h3>Selected Teachers:</h3>
+<div id="selected-teachers"></div>
+
+<!-- Button to open popup -->
+<button onclick="openPopup()">Add Teachers</button>
+
+<!-- Popup -->
+<div id="popup-overlay">
+    <div id="popup">
+        <h3>Select Department</h3>
+
+        <!-- Department select box -->
+        <select id="department-select" onchange="loadTeachers()">
+            <option value="">-- Choose Department --</option>
+            <option value="CS">Computer Science</option>
+            <option value="Math">Mathematics</option>
+            <option value="Physics">Physics</option>
+        </select>
+
+        <!-- Container for teachers list -->
+        <div id="teachers-list" style="margin-top: 15px;"></div>
+
+        <!-- Done button -->
+        <button id="done-btn" onclick="doneSelection()">Done</button>
+        <button id="close-btn" onclick="closePopup()">Cancel</button>
+    </div>
+</div>
+
+<script>
+    // Fake teachers data
+    const teachersData = {
+        "CS": ["Alice", "Bob", "Charlie"],
+        "Math": ["David", "Eva"],
+        "Physics": ["Frank", "Grace", "Hannah"]
+    };
+
+    function openPopup() {
+        document.getElementById("popup-overlay").style.display = "flex";
+        document.getElementById("teachers-list").innerHTML = "";
+        document.getElementById("department-select").value = "";
+    }
+
+    function closePopup() {
+        document.getElementById("popup-overlay").style.display = "none";
+    }
+
+    function loadTeachers() {
+        const dept = document.getElementById("department-select").value;
+        const listDiv = document.getElementById("teachers-list");
+        listDiv.innerHTML = "";
+
+        if (dept && teachersData[dept]) {
+            teachersData[dept].forEach((teacher, index) => {
+                let checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.id = `teacher_${index}`;
+                checkbox.value = teacher;
+                checkbox.name = "teachers";
+
+                let label = document.createElement("label");
+                label.htmlFor = `teacher_${index}`;
+                label.textContent = teacher;
+
+                listDiv.appendChild(checkbox);
+                listDiv.appendChild(label);
+                listDiv.appendChild(document.createElement("br"));
+            });
+        }
+    }
+
+    function doneSelection() {
+        const selectedTeachers = [];
+        document.querySelectorAll("#teachers-list input[type='checkbox']:checked").forEach(checkbox => {
+            selectedTeachers.push(checkbox.value);
+        });
+
+        // Display selected teachers outside
+        const displayDiv = document.getElementById("selected-teachers");
+        displayDiv.innerHTML = "";
+
+        if (selectedTeachers.length === 0) {
+            displayDiv.innerHTML = "<p>No teacher selected.</p>";
+        } else {
+            selectedTeachers.forEach(name => {
+                const p = document.createElement("p");
+                p.textContent = name;
+                displayDiv.appendChild(p);
+            });
+        }
+
+        // Close popup
+        closePopup();
+    }
+</script>
+
+ document.addEventListener("DOMContentLoaded", function() {
+        // Listen for changes on department dropdowns
+        document.querySelectorAll(".department-select").forEach(select => {
+            select.addEventListener("change", function() {
+                let courseId = this.dataset.course;
+                let departmentName = this.value;
+                let instructorContainer = document.getElementById("instructors_" + courseId);
+                instructorContainer.innerHTML = ""; // Clear previous instructors
+
+                // Only fetch instructors if a department is selected
+                if (departmentName) {
+                    fetch(`/get_instructors/?department_name=${departmentName}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("Failed to fetch instructors");
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Add checkboxes for each instructor in the selected department
+                            data.instructors.forEach(instructor => {
+                                let checkbox = document.createElement("input");
+                                checkbox.type = "checkbox";
+                                checkbox.name = `instructors_${courseId}[]`;
+                                checkbox.value = instructor.id;
+                                checkbox.setAttribute("data_name", instructor.first_name); // 🛠️ Custom attribute for first_name
+                                checkbox.classList.add("instructor-checkbox");
+
+                                let label = document.createElement("label");
+                                label.appendChild(checkbox);
+                                label.append(instructor.first_name);
+
+                                instructorContainer.appendChild(label);
+                                instructorContainer.appendChild(document.createElement("br"));
+                            });
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                }
+            });
+        });
+    });
+
+
+    function doneSelection() {
+        const selectedTeachers = [];
+        document.querySelectorAll(".instructor-checkbox:checked").forEach(checkbox => {
+            selectedTeachers.push({
+                id: checkbox.value,
+                name: checkbox.getAttribute("data_name")
+            });
+        });
+
+        const displayDiv = document.getElementById("selected-teachers-" + currentCourseId);
+
+        // 🛠️ IMPORTANT: Collect already existing instructor IDs
+        const existingIds = new Set(
+            Array.from(displayDiv.querySelectorAll("input[type='hidden']")).map(input => input.value)
+        );
+
+        // 🛠️ Remove "No teacher selected" if exists
+        const noTeacherParagraph = displayDiv.querySelector("p");
+        if (noTeacherParagraph && noTeacherParagraph.textContent.trim() === "No teacher selected.") {
+            noTeacherParagraph.remove();
+        }
+
+        if (selectedTeachers.length === 0 && displayDiv.innerHTML.trim() === "") {
+            displayDiv.innerHTML = "<p>No teacher selected.</p>";
+        } else {
+            selectedTeachers.forEach(teacher => {
+                if (!existingIds.has(teacher.id)) {
+                    // 🛠️ Only ADD if this teacher is not already selected
+
+                    // Add name to display
+                    const p = document.createElement("p");
+                    p.textContent = teacher.name;
+                    displayDiv.appendChild(p);
+
+                    // Add hidden input for form submission
+                    const hiddenInput = document.createElement("input");
+                    hiddenInput.type = "hidden";
+                    hiddenInput.name = `instructors_${currentCourseId}[]`;
+                    hiddenInput.value = teacher.id;
+                    displayDiv.appendChild(hiddenInput);
+                }
+            });
+        }
+
+        closePopup(currentCourseId);
+    }//
+
+
+</body>
+</html>
+   let currentCourseId = null; // global variable
+
+    function openPopups(courseId) {
+        currentCourseId = courseId;
+        document.getElementById("popup-overlay-" + courseId).style.display = "flex";
+
+        // Reset the department select box
+        const departmentSelect = document.getElementById("department-select-" + courseId);
+        departmentSelect.selectedIndex = 0;
+
+        // Clear the instructor checkboxes container
+        const instructorContainer = document.getElementById("instructors_" + courseId);
+        instructorContainer.innerHTML = "";
+    }
+
+    function openPopup(courseId) {
+        currentCourseId = courseId;
+
+        // Show the popup
+        document.getElementById("popup-overlay-" + courseId).style.display = "flex";
+
+        // Reset only the department dropdown
+        const departmentSelect = document.getElementById("department-select-" + courseId);
+        departmentSelect.selectedIndex = 0;
+
+        // DO NOT CLEAR instructors or selected checkboxes
+    }
+
+    function closePopup(courseId) {
+        document.getElementById("popup-overlay-" + courseId).style.display = "none";
+
+        // Reset department select
+        const departmentSelect = document.getElementById("department-select-" + courseId);
+        if (departmentSelect) departmentSelect.selectedIndex = 0;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".department-select").forEach(select => {
+            select.addEventListener("change", function() {
+                let courseId = this.dataset.course;
+                let departmentName = this.value;
+                let instructorContainer = document.getElementById("instructors_" + courseId);
+                instructorContainer.innerHTML = "";
+
+                if (departmentName) {
+                    loadTeachers(courseId, departmentName);
+                }
+            });
+        });
+    });
+
+    function loadTeachers(courseId, departmentName) {
+    fetch(`/get_instructors/?department_name=${departmentName}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch instructors");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const instructorContainer = document.getElementById("instructors_" + courseId);
+            data.instructors.forEach(instructor => {
+                let checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.name = `instructors_${courseId}[]`;
+                checkbox.value = instructor.id;
+                checkbox.setAttribute("data-name", instructor.first_name); // fixed typo: use data-name
+                checkbox.classList.add("instructor-checkbox");
+
+                let label = document.createElement("label");
+                label.appendChild(checkbox);
+                label.append(" " + instructor.first_name);
+
+                instructorContainer.appendChild(label);
+                instructorContainer.appendChild(document.createElement("br"));
+
+                // Add event listener IMMEDIATELY to checkbox
+                checkbox.addEventListener("change", function() {
+                    handleCheckboxChange(this, courseId);
+                });
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    }
+
+    function handleCheckboxChange(checkbox, courseId, instructorId) {
+        const containerId = `selected-instructors-${courseId}`;
+        const container = document.getElementById(containerId);
+
+        const existingInput = container.querySelector(`input[value="${instructorId}"]`);
+
+        if (checkbox.checked) {
+            if (!existingInput) {
+                const hiddenInput = document.createElement("input");
+                hiddenInput.type = "hidden";
+                hiddenInput.name = `instructors_${courseId}[]`;
+                hiddenInput.value = instructorId;
+                container.appendChild(hiddenInput);
+            }
+        } else {
+            if (existingInput) {
+                container.removeChild(existingInput);
+            }
+        }
+    }
+
+</script>
+</body>
+
+    function handleCheckboxChange(checkbox, courseId) {
+        const displayDiv = document.getElementById("selected-teachers-" + courseId);
+
+        const id = checkbox.value;
+        const name = checkbox.getAttribute("data-name");
+
+        if (checkbox.checked) {
+            // Check if already exists
+            if (displayDiv.querySelector([data-id='${id}'])) return;
+
+            // Remove "No teacher selected." if present
+            const noMsg = displayDiv.querySelector("p");
+            if (noMsg && noMsg.textContent === "No teacher selected.") {
+                noMsg.remove();
+            }
+
+            // Create a wrapper div
+            const teacherDiv = document.createElement("div");
+            teacherDiv.classList.add("selected-teacher");
+            teacherDiv.setAttribute("data-id", id);
+
+            // Create name element
+            const p = document.createElement("span");
+            p.textContent = name;
+
+            // Create delete button
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "✖️";
+            deleteBtn.style.marginLeft = "10px";
+            deleteBtn.style.color = "red";
+            deleteBtn.style.border = "none";
+            deleteBtn.style.background = "none";
+            deleteBtn.style.cursor = "pointer";
+            deleteBtn.onclick = function() {
+                teacherDiv.remove();
+                // Uncheck the checkbox
+                checkbox.checked = false;
+
+                // If no teachers remain, show the no-teacher message
+                if (displayDiv.querySelectorAll("div.selected-teacher").length === 0) {
+                    displayDiv.innerHTML = "<p>No teacher selected.</p>";
+                }
+            };
+
+            // Hidden input
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = instructors_${courseId}[];
+            hiddenInput.id = hidden-${courseId}-${checkbox.value};
+            hiddenInput.value = hiddenInput.id;
+
+            // Assemble
+            teacherDiv.appendChild(p);
+            teacherDiv.appendChild(deleteBtn);
+            teacherDiv.appendChild(hiddenInput);
+            displayDiv.appendChild(teacherDiv);
+            } else {
+                 // Remove teacher if unchecked
+                 const teacherDiv = displayDiv.querySelector(div[data-id='${id}']);
+                 if (teacherDiv) teacherDiv.remove();
+
+                 // If none left
+                 if (displayDiv.querySelectorAll("div.selected-teacher").length === 0) {
+                    displayDiv.innerHTML = "<p>No teacher selected.</p>";
+                 }
+            }
+        }
+</html>

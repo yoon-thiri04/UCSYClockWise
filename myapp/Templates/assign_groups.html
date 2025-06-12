@@ -1,0 +1,78 @@
+{% extends "base1.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>match groups and company</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/match_groups.css' %}">
+</head>
+<body>
+{% block content %}
+<link rel="stylesheet" href="{% static 'CSS/assign_groups.css' %}">
+    <h2 class="section-heading accent">Recent</h2>
+    <h1 class="section-heading primary">Timetables</h1>
+
+    <div class="whole-body">
+        <div class="header">
+            <h2 class="semester-title">
+                <img src="{% static 'images/BuildingOffice.jpg' %}" alt="Class Icon" class="class-icon">&nbsp;
+                Semester-10
+            </h2>
+            <p class="subtext">Named the companies and assign groups of each company</p>
+        </div><br>
+
+        <form method="POST">
+            {% csrf_token %}
+            {% for company in companies %}
+            <div class="company-section">
+                <h3 class="company-title">{{ company.company_name }}</h3>
+                {% for group in groups %}
+                    <label class="group-label">
+                        <input type="checkbox" name="group_{{ company.id }}" value="{{ group.id }}" class="group-checkbox" data-group="{{ group.id }}">
+                        {{ group.name }}
+                    </label>
+                {% endfor %}
+            </div><br>
+            {% endfor %}
+
+            <button class="next-button" type="submit">>> Next</button>
+        </form>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let groupCheckboxes = document.querySelectorAll('.group-checkbox');
+        let selectedGroups = new Set();
+
+        groupCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                let groupId = this.getAttribute('data-group');
+
+                if (this.checked) {
+                    selectedGroups.add(groupId);
+                } else {
+                    selectedGroups.delete(groupId);
+                }
+
+                // Disable the group in other companies if already selected
+                groupCheckboxes.forEach(otherCheckbox => {
+                    if (selectedGroups.has(otherCheckbox.getAttribute('data-group')) && !otherCheckbox.checked) {
+                        otherCheckbox.disabled = true;
+                    } else {
+                        otherCheckbox.disabled = false;
+                    }
+                });
+            });
+        });
+    });
+    </script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Account</title>
+        <link rel="stylesheet" href="/static/CSS/acc1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+
+
+
+</style>
+{% extends "base3.html" %}
+{% load static %}
+
+<body>
+
+{% block content %}
+<!--<button onclick="location.href='{% url 'view-Page' %}'">Back</button>-->
+<br>
+<div id="first_div"> <span id="first_pr">Your Profile </span><img src="/static/images/Icon.jpg" ></div>
+<div class="row-container">
+    <div class="box box1">
+        <div class="b1">
+
+           <br> <div id="img1"><img src="/static/images/pp.jpg" id="img" style="outline:none"></div>
+
+         <h4 class="head1" >{{request.user.first_name}}</h4>
+<h6 class="head2" style="color:grey">{{request.user.email}}</h6>
+        </div><br>
+        <div class="b2"><br> <img src="/static/images/v6.jpg"><span id="b1_span">Information</span>
+            <br><div class="bb1"><span class="b1_sp1" > Name&nbsp;: {{ request.user.first_name }} </span>
+        <br><label class="b1_sp" > Email&nbsp;&nbsp;: {{ request.user.email }} </label>
+                <br><label class="b1_sp2" > Role&nbsp;&nbsp;&nbsp;: {{ request.session.role }} </label></div>
+        </div><br>
+        <div class="b3">
+        <div class="slider-container">
+    <div class="slider-track" id="sliderTrack">
+      <div class="slide">
+        <a href="" target="">
+            <img src="/static/images/frame.jpg" alt="Image 1"></a>
+      </div>
+
+      <div class="slide">
+        <a href="" target="">
+            <img src="/static/images/frame.jpg" alt="Image 2"></a>
+      </div>
+    </div>
+</div>
+        </div>
+    </div>
+    <div class="box box2">
+        <div id="bb2">
+          <h4 id="b2_h4"> <br> <img src="/static/images/ucg.jpg"><span id="b2_span">User settings</span></h4>
+            <h4 id="b2_h5">Details</h4>
+
+
+<div class="box2_b2">
+    <div  class="box2_bb2">
+    <p class="box2_label">Name </p>
+    <input type="text" placeholder="&nbsp;{{ request.user.first_name }}" class="box2_input" >
+   </div>
+    <div class="box2_bb3">
+    <label class="box2_label2">Last</label><label class="box2_label1"> Name</label><br>
+        <input type="text" class="box2_input1" placeholder="&nbsp;{{ request.user.last_name }}"></div>
+</div><br>
+            <div style="display:flex;margin-top:-20px">
+            <div  class="box2_bb2">
+     <p class="box2_label3">Email</p>
+    <input type="text" placeholder="&nbsp;{{ request.user.email }}" class="box2_input" >
+            </div>
+                <div  class="box2_bb3">
+   <p class="box2_label4">Role</p>
+                    <input type="text" placeholder="&nbsp;{{ request.session.role }}" class="box2_input2" >
+                </div>
+            </div><br>
+
+
+<form method="POST">
+    <label class="box2_label5">Change Password</label>
+        {% csrf_token %}
+
+         <div id="end" >
+             &nbsp;{{form.as_p }}</div> <br>
+
+
+
+        <button type="submit" id="save_but"  >Save Changes</button>
+    &nbsp;
+
+    </form>
+
+</div>
+    </div>
+    <div class="box box3">
+        <div class="b3_b1"><br><h4 class="b3_h4">Your major</h4>
+        <h2 id="b3_h2">KE</h2></div><br>
+        <div class="b3_b1"><br><h4 class="b3_h4">Your semester</h4>
+        <h2 id="b3_h3">V</h2></div><br>
+        <div class="b3_b1"><br><h4 class="b3_h4">Your room</h4>
+        <h2 id="b3_h4">E005</h2></div><br>
+         <div class="b3_b1"><br><h4 class="b3_h4">Your Lab room</h4>
+        <h2 id="b3_h5">B & C</h2></div><br>
+        <div class="b3_b2"><img src="/static/images/box3.jpg" width="200px" height="145px"></div><br>
+    </div>
+</div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags == 'success' %}alert-success{% elif message.tags == 'error' %}alert-danger{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+<script>
+    let currentSlide = 0;
+
+    function autoSlide() {
+      const track = document.getElementById('sliderTrack');
+      currentSlide = (currentSlide + 1) % 2;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    setInterval(autoSlide, 3000); // Auto slide every 3 seconds
+  </script>
+{% endblock %}
+
+</body>
+</html>

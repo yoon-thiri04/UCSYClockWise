@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% extends "base4.html" %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time Table list for semester {{ request.session.semester }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+    <link rel="stylesheet" href="{% static 'CSS/timetable_list.css' %}">
+    <h1 class="timetable-header">
+    Your <span>Timetables</span> are ready
+    <img src="{% static 'images/WavingHand.jpg' %}">
+    </h1>
+
+    <div class="whole">
+        <h4 class="title">
+           <img src="{% static 'images/Office.jpg' %}" class="class-icon">
+            Generated Timetables
+        </h4>
+        <p>This page displays a dynamically generated timetable based on the selected semester <span class="semester">{{ semester }}</span>.</p>
+
+            <table class="timetable-table" >
+                <thead>
+                    <tr>
+                        <th><u>CLASS-NAME</u></th>
+                        <th style="padding-left: 120px;"><u>MAJORS</u></th>
+                        <th style="padding-right: 60px;"><u>ACTION</u></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for room in classrooms %}
+                    <tr>
+                        <td>{{ room.room_number }}</td>
+                        <td style="padding-left: 60px;">
+
+                            {% for major in room.majors.all %}
+                                {{ major.name }}{% if not forloop.last %},<br> {% endif %}
+                            {% empty %}
+                                No majors assigned
+                            {% endfor %}
+
+                        </td>
+                        <td>
+                            <div class="link">
+                                <a href="{% url 'classroom-timetable' semester_id=semester_id classroom_id=room.id %}">
+                                   <u>view</u>
+                                </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a> <img src="{% static 'images/Pencil.jpg' %}" class="class-icon"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="{% url 'classroom-delete' semester_id=semester_id classroom_id=room.id %}">
+                                     <i class="fas fa-trash-alt" style="color: #F55252;"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        <a href="{% url 'fill_room_data' semester_id=semester_id %}" class="add-btn">
+            <img src="{% static 'images/Plus.jpg' %}" class="class-icon">&nbsp;
+            <u>Add new class timetable for this semester</u>
+        </a>
+    </div>
+
+    <button class="back" onclick="location.href='{% url 'admin-home' %}'"><< Previous</button>
+
+    {% endblock %}
+</body>
+</html>
+

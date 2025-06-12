@@ -1,0 +1,139 @@
+{% extends "base5.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <title></title>
+</head>
+<body>
+{% block content %}
+<link rel="stylesheet" href="{% static 'CSS/merged_one.css' %}">
+    <div>
+        <h1 class="page-title">Smart <span class="highlight">Merge</span>  for Shared Subjects</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div id="semester_part">
+                <h3><img src="{% static 'images/UsersThree.jpg' %}" alt="Class Icon" class="class-icon">&nbsp;&nbsp;
+              Choose the <span class="header">Semester</span>
+            </h3>
+          <p>You can only <span class="select-text">select only one</span> semester for the Head Merge</p>
+
+                <div id="semester_select">
+                    <select id="semester" name="semester" onchange="loadClassroom()">
+                        <option value="">Select semester</option>
+                        {% for s in semesters %}
+                            <option value="{{ s.id }}">{{ s.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div><br>
+            <div id="classroom_part">
+                <h3><img src="{% static 'images/room.jpg' %}" class="class-icon">&nbsp;&nbsp;
+                  Choose the <span class="header">Classroom</span>
+                </h3>
+                 <p>You can only <span class="select-text">select only one</span> classroom for the Head Merge</p>
+
+                <div id="classroom_select">
+                    <select id="classroom" name="classroom" onchange="loadCourse()">
+                        <option value="">Select classroom</option>
+                    </select>
+                </div>
+            </div><br>
+            <div id="course_part">
+                 <h3><img src="{% static 'images/Book.jpg' %}" class="class-icon">&nbsp;&nbsp;
+                  Choose the <span class="header">Course</span>
+                </h3>
+            <p>You can only <span class="select-text">select only one</span> course for the Head Merge</p>
+                <div id="course_select">
+                    <select id="course" name="course" onchange="showMergeClassDiv()">
+                        <option value="">Select Course</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn-next"> >> Next </button>
+        </form>
+    </div>
+
+<script>
+    function loadClassroom() {
+        const semesterId = document.getElementById('semester').value;
+        console.log("Selected semesterId:", semesterId);
+
+        if (!semesterId) {
+            console.log("No semester selected.");
+            return;
+        }
+
+        fetch(`/get-classrooms/${semesterId}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Fetched classroom data:", data);
+
+                const classroomSelect = document.getElementById('classroom');
+                classroomSelect.innerHTML = '<option value="">Select classroom</option>';
+
+                data.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.id;
+                    option.textContent = c.name;
+                    classroomSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching classrooms:", error);
+            });
+    }
+
+    function loadCourse() {
+        const semesterId = document.getElementById('semester').value;
+        const classroomId = document.getElementById('classroom').value;
+        console.log("Selected semesterId:", semesterId);
+        console.log("Selected classroomId:", classroomId);
+
+        if (!classroomId) {
+            console.log("No classroom selected.");
+            return;
+        }
+
+        fetch(`/get-courses/${classroomId}/`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Fetched courses data:", data);
+
+                const courseSelect = document.getElementById('course');
+                courseSelect.innerHTML = '<option value="">Select course</option>';
+
+                data.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.id;
+                    option.textContent = c.course_id;
+                    courseSelect.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching courses:", error);
+            });
+    }
+
+</script>
+{% endblock %}
+</body>
+</html>
+

@@ -1,0 +1,125 @@
+        .page-title {
+        font-size: 35px;
+        text-align: center;
+        font-weight: bold;
+        color: #343969;
+        padding-top: 20px;
+        margin-bottom: 40px;
+        }
+
+        .page-title .highlight {
+            background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .merge-one{
+        background-color: white;
+        border-radius: 15px;
+        line-height: 37.5px;
+        padding: 40px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .merge-two{
+        background-color: white;
+        border-radius: 15px;
+        line-height: 37.5px;
+        padding: 40px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h3{
+         color: #343969;
+         font-size: 23px;
+         font-family: 'Poppins';
+         font-weight: 500px;
+         margin-top: -10px;
+        }
+
+        p {
+            font-family: 'Red Hat Display';
+            font-size: 16px;
+            font-weight: 400px;
+            letter-spacing: 0;
+            text-align: justify;
+            color: #565656;
+            padding-bottom: 0px;
+        }
+
+        table.timetable-table {
+            width: 100%;
+            color: #343969;
+            border-collapse: collapse;
+            font-family: 'Inter';
+            font-size: 18px;
+        }
+
+        table.timetable-table thead {
+            background-color: #f2f2f2;
+            color: #343969;
+            opacity: 0.8;
+            font-weight: 300px;
+        }
+
+        table.timetable-table th,
+        table.timetable-table td {
+            padding: 10px;
+            font-family: 'Inter' !important;
+            font-size: 16px;
+        }
+
+        table.timetable-table th:first-child{
+            padding-left: 30px;
+            font-weight: 600px;
+        }
+
+        table.timetable-table td:first-child {
+            padding-left: 30px;
+            font-weight: 700px;
+            font-family: 'Inter' !important;
+
+        }
+
+        table.timetable-table th:last-child{
+            text-align: right;
+            padding-right: 30px;
+            font-weight: 600px;
+        }
+
+        table.timetable-table td:last-child {
+            text-align: right;
+            padding-right: 70px;
+            font-weight: 700px;
+            font-family: 'Inter' !important;
+
+        }
+
+        table.timetable-table td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .view-timetable-link {
+            text-decoration: none;
+            margin-right:-40px;
+            color: #5AA1FE;
+            font-size: 18px;
+            font-family: 'Inter';
+        }
+
+        .view-timetable-link:hover {
+            color: #343969 !important;
+        }
+
+        .link{
+        color: #5AA1FE !important;
+        font-size: 18px;
+        font-family: 'Inter';
+        }
+
+        .link:hover{
+         color: #343969 !important;
+
+        }

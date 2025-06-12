@@ -1,0 +1,144 @@
+
+ body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+
+
+
+    min-height: 100vh;
+}
+
+
+
+#head1 {
+ font-size: 2rem;
+     font-weight: bold;
+    padding-bottom: 30px;
+    text-align:center;
+    color: rgba(52, 57, 105, 1);
+}
+
+ .w1 {
+    color: rgba(61, 194, 185, 1); /* Accent color for "details" */
+}
+
+.course-section {
+    border: 1px solid #e0e0e0;
+    width:90%;
+    padding: 16px;
+    border-radius: 8px;
+    margin-left:50px;
+    margin-bottom: 16px;
+    background-color: #f9f9f9;
+}
+
+#h3 {
+    font-size: 20px;
+    color: rgba(52, 57, 105, 1);
+    margin-bottom: 8px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 8px 0;
+    color: #555;
+}
+
+
+input.credit-hours-input {
+display:grid;
+    width: 40%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    margin-bottom: 8px;
+}
+
+select.department-select {
+  display:block;
+    width: 40%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 14px;
+    margin-top: -2.9rem;
+    margin-left:500px;
+}
+#sp1{
+ margin-left:340px;
+}
+
+
+
+
+.instructor-checkboxes label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Styling checkboxes */
+.instructor-checkboxes input[type="checkbox"] {
+    appearance: none; /* Remove default checkbox style */
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    vertical-align: middle;
+    cursor: pointer;
+    margin-right: 8px;
+    position: relative;
+}
+
+/* Change the border and background color when selected */
+.instructor-checkboxes input[type="checkbox"]:checked {
+    border-color: rgba(61, 194, 185, 1);
+    background-color:  rgba(61, 194, 185, 1);
+}
+
+.instructor-checkboxes input[type="checkbox"]:checked::before {
+    content: '✔'; /* Add a check mark */
+    font-size: 12px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Highlight the label when the checkbox is checked */
+.instructor-checkboxes input[type="checkbox"]:checked + label{
+    font-weight: 600;
+    color: rgba(61, 194, 185, 1);
+}
+  button[type="reset"] {
+width:30%;
+height:10%;
+margin-left:50px;
+    border: 2px solid #289F97;
+
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color:rgba(61, 194, 185, 1);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s,color 0.3s;
+}
+
+
+
+    #bb:hover{
+    background-color:rgba(61, 194, 185, 1);
+    color:white;}
+
+ #bb{
+
+            }

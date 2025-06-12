@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCSY Timetable Management</title>
+    <link rel="stylesheet" href="/static/CSS/home2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://kit.fontawesome.com/YOUR_KIT_CODE.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+  /* Add arrow to the dropdown */
+  #clockwiseDropdown + .dropdown-menu::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: 20px; /* adjust to position the arrow */
+    width:0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white; /* same as dropdown bg */
+    z-index: 1001;
+  }
+
+  /* Optional: add shadow to dropdown */
+  .dropdown-menu {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    width:160%;
+  }
+
+  /* Optional: style image */
+  .drop_img {
+    width: 100%;
+    border-radius: 6px;
+  }
+</style>
+
+
+<!-- Include Bootstrap 5 CSS in your <head> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Include Bootstrap 5 JS (optional, for hamburger toggle to work) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<nav class="navbar navbar-expand-lg custom-navbar" style="background: rgba(33, 200, 246, 0.1);">
+    <div class="container-fluid">
+        <!-- Logo and Title -->
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img src="/static/images/logo1.jpg" alt="Our Logo" width="50" class="me-2" style="mix-blend-mode: multiply;">
+            <span class="fw-bold fs-5">UCSY ClockWise</span>
+        </a>
+
+        <!-- Toggle Button for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nav Items -->
+        <div class="collapse navbar-collapse" id="navbarNav" style="margin-left:20%;">
+            <ul class="navbar-nav ms-auto align-items-center gap-3" >
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="#first">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="#second">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="#third">Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="#four">Subscribe</a>
+                </li>
+             <li class="nav-item dropdown position-relative">
+  <a class="nav-link fw-semibold dropdown-toggle" href="#" id="clockwiseDropdown" role="button"
+     data-bs-toggle="dropdown" aria-expanded="false">
+    Clockwise
+  </a>
+  <ul class="dropdown-menu custom-dropdown" aria-labelledby="clockwiseDropdown" style="width:60vh;height:33vh;margin-left:-40vh;">
+    <div class="row gx-2">
+      <div class="col-6 d-flex flex-column gap-2">
+        <button onclick="location.href='{% url 'generate' %}'" class="btn  p-3" >
+            <img src="/static/images/generate.jpg" class="ge_img"><span class="ge_sp" style="border:none;outline:none"> Generate New <i class="fa-solid fa-arrow-right" style="margin-left:20px;color:rgba(29, 104, 244, 1)"></i></span><br><label class="ge_span">Get new timetables</label>
+        </button>
+        <button type="button" class="btn btn-link  p-3" onclick="location.href='{% url 'timetable_list' 8%}'" >
+           <img src="/static/images/generated.jpg" class="ge_img"><span class="ge_sp" style="border:none;outline:none"> Generated <i class="fa-solid fa-arrow-right" style="margin-left:38px;color:rgba(29, 104, 244, 1)"></i></span><br><label class="ge_span">View generated timetables</label>
+        </button>
+        <button type="button" class="btn btn-link p-3" onclick="location.href='{% url 'lab_room_timetable_list' %}'">
+          <img src="/static/images/labcircle.jpg" class="ge_img"><span class="ge_sp" style="border:none;outline:none"> Lab-rooms <i class="fa-solid fa-arrow-right" style="margin-left:35px;color:rgba(29, 104, 244, 1)"></i></span><br><label class="ge_span">View lab-rooms timetables</label>
+        </button>
+      </div>
+      <div class="col-6 d-flex flex-column gap-2">
+        <button type="button" class="btn btn-link  p-3" onclick="location.href='{% url 'timetable_list' 8%}'">
+          <img src="/static/images/editblock.jpg" class="ge_img"><span class="ge_sp" style="border:none;outline:none"> Edit <i class="fa-solid fa-arrow-right" style="margin-left:67px;color:rgba(29, 104, 244, 1)"></i></span><br><label class="ge_span">Swap generated timetables</label>
+        </button>
+        <button type="button" class="btn btn-link p-3" onclick="location.href='{% url 'merged-list' %}'">
+          <img src="/static/images/merge.jpg" class="ge_img"><span class="ge_sp" style="border:none;outline:none"> Merge <i class="fa-solid fa-arrow-right" style="margin-left:56px;color:rgba(29, 104, 244, 1)"></i></span><br><label class="ge_span">Merge the times</label>
+        </button>
+      </div>
+    </div>
+  </ul>
+</li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user-account' %}">
+                        <img src="/static/images/user.jpg" alt="User" width="30" height="30" class="rounded-circle">
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div id="first">
+    <section class="hero">
+        {% block content %}
+        {% endblock %}
+
+        <div class="flex-container">
+            <div id="first_div">
+                <span id="FLabel">UCSY Clockwise</span><br>
+                <span id="FLabel1">Timetable Generator</span><br><br>
+                <span id="FLabel2">At UCSY Clockwise, you can easily generate and access university timetables. Admins can manage schedules effortlessly, and students can find their classes in just a few clicks.</span><br><br>
+                <button onclick="location.href='{% url 'view' %}'" style="border-radius:100px" id="F_but" >View timetables</button><img src="/static/images/play1.jpg" id="play">
+                <button onclick="location.href='{% url 'generate' %}'" style="border:none;background-color: transparent;" id="F_but1"> <span> Watch how it works</span></button>
+
+            </div>
+             <div id="fbox1">
+  <img src="/static/images/table.jpg" class="ta">
+  <div class="fbox-text">
+    <span class="F_span2">Timetables</span>
+    <span class="F_span">that generated</span>
+  </div>
+</div>
+           <div id="fbox">
+  <img src="/static/images/notimail.jpg" class="mail" style="width:30px;">
+  <div class="fbox-text">
+    <span class="F_span1">Notice</span>
+    <span class="F_span">&nbsp;Messages that related with you</span>
+  </div>
+</div>
+
+
+
+            <img src="/static/images/human.jpg" id="human">
+                         <div id="fbox2">
+  <img src="/static/images/comp.jpg" class="comp">
+  <div class="fbox-text">
+    <span class="F_span2">&nbsp;&nbsp;Assgs & Tuto</span>
+    <span class="F_span">&nbsp;&nbsp;Today at 12.00 PM</span>
+      <button type="submit" id="F_but2">View Now</button>
+  </div>
+</div>
+        </div>
+    </section>
+</div><br><br>
+
+<div id="two">
+    <section>
+        <h2 id="S_h2"><span id="S_sp">All-In-One</span><span id="S-sp1"> Solution</span></h2>
+        <h4 id="S_h4"><span class="S-sp2">Easily access and manage timetables in just a few steps. Whether</span><br> <span class="S-sp2">you're a student checking your schedule or an admin organizing </span><br><span class="S-sp2">classes, our system makes it simple and efficient</span></h4>
+
+        <div class="S_div" >
+            <div class="S_div1" style="max-width:27%; "><img src="/static/images/S_img1.jpg" class="S_img" style=""><img src="/static/images/S_img2.jpg"  class="S_img1" style="margin-left:102px;" ><br>
+            <h2 class="S_h21" style="font-size:18px;">Creates Timetables</h2><br>
+                <h4 class="S_h4" style="font-size:15px;"><span class="S_h41"><b>Admins</b> log in and enter course</span><br><span class="S_h41"> details, class , lecturers, and </span><br><span class="S_h41">available slots.</span></h4></div>
+            <div class="S_div1" style="max-width:27%;"><img src="/static/images/S_img3.jpg" class="S_img" style=""><img src="/static/images/S_img4.jpg"  class="S_img1" style="margin-left:102px;"><br>
+            <h2 class="S_h21" style="font-size:18px;">Prevents Conflicts</h2><br>
+                <h4 class="S_h4" style="font-size:15px;"><span class="S_h41">The system auto-detects clashes</span><br><span class="S_h41">and organizes a smooth </span><br><span class="S_h41">schedule for the whole school.</span></h4></div>
+            <div class="S_div1" style="max-width:27%; "><img src="/static/images/S_img5.jpg" class="S_img" style=""><img src="/static/images/S_img6.jpg"  class="S_img1" style="margin-left:100px;"><br>
+            <h2 class="S_h21" style="font-size:18px;">View & Download</h2><br>
+                <h4 class="S_h4" style="font-size:15px;"><span class="S_h41">Students search, view, and</span><br><span class="S_h41"> download their timetables </span><br><span class="S_h41">anytime.</span></h4></div>
+
+        </div>
+
+    </section>
+
+</div>
+<div>
+<section>
+<div class="slider-container">
+    <div class="slider-track" id="sliderTrack">
+      <div class="slide">
+        <a href="" target="">
+            <img src="/static/images/tp2.jpg" alt="Image 1"></a>
+      </div>
+
+      <div class="slide">
+        <a href="" target="">
+            <img src="/static/images/tp1.jpg" alt="Image 2"></a>
+      </div>
+    </div>
+</div>
+    <section>
+ </div>
+<br><br><br><br>
+
+<div id="three" >
+    <img src="/static/images/div3.jpg" width="80%" height="auto" style="margin-left:10%">
+  <!--  <section>
+        <h2 id="T_h2"><span id="T_Sp">Our</span> <span id="T_sp1">Features</span></h2>
+        <h4 id="T_h4"><span id="T_sp2">This very extraordinary feature, can make learning activities more efficient</span></h4><br><br>
+
+       <div class="feature-wrapper" style=";margin-top:-80px;">
+      <div class="image-group">
+        <img src="/static/images/gcircle.jpg" id="gcircle">
+        <img src="/static/images/bcircle.jpg" id="bcircle">
+        <img src="/static/images/vcircle.jpg" id="vcircle">
+        <img src="/static/images/screen.jpg" id="screen">
+      </div>
+
+      <div class="text-group" style=";margin-top:60px;">
+        <h2>
+            <span id="T_sp4"><br><br><br>UCSY ClockWise Essential <br> for<span style="color:rgba(244, 140, 6, 1)"> Smarter Scheduling?</span></span>
+        </h2><br>
+          <img src="/static/images/box.jpg" style="width:25px;height:25px;margin-top:10px;"><span class="T_sp6" style="font-size:15px;">&nbsp;Generate complete, timetables in <br><span class="T_sp7" style="font-size:15px;">seconds using intelligent automation.<span></span><br><br>
+          <img src="/static/images/box1.jpg" style="width:25px;height:25px"><span class="T_sp6" style="font-size:15px;">Classrooms and labs are assigned <br><span class="T_sp7" style="font-size:15px;">based on availability and capacity.</span></span><br><br>
+          <img src="/static/images/box2.jpg" style="width:25px;height:25px"><span class="T_sp6" style="font-size:15px;">The system alerts you immediately if<br><span class="T_sp7" style="font-size:15px;"> there's any overlap or instructor </span><span class="T_sp7" style="font-size:15px;">unavailability.</span></span>
+       </div>
+    </div>
+
+    </section>-->
+</div><br><br>
+
+<div id="Four">
+    <section>
+       <div id="fo_div1">
+           <h2 class="fo_h2" >Easy Drag-and-Drop <br><span class="fo_sp">Editor</span> Interface</h2>
+           <span class="fo_h4">Adjust your timetable effortlessly with our intuitive drag-<br>and-drop feature. Easily move classes, rooms, or times<br> with just a few clicks, making the scheduling process<br> quick and flexible.</span>
+       </div>
+        <div id="fo_div2"><img src="/static/images/edit.jpg" class="fo_img" ></div>
+
+    </section>
+</div><br>
+<div id="five">
+    <section>
+        <div id="ff_div1"><img src="/static/images/noti.jpg" id="ff_img"> </div>
+        <div id="ff_div2">
+            <h2 class="fo_h2"><span class="fo_sp">Notices</span> & <br>Announcements</h2>
+            <p id="ff_h4">Stay informed with real-time updates on tutorials,<br>assignments, and important school-wide or class-<br>specific announcements.UCSY ClockWise allows<br>admins and instructors to post notices ,ensuring<br>that students never miss important deadlines or <br>events.</p>
+        </div>
+
+    </section>
+</div><br><br>
+<div id="six">
+    <section>
+        <div id="ss_div1">
+            <h2 class="fo_h2">Role-Based <span class="fo_sp">Access</span> for <br>differences</h2>
+            <h4 class="fo_h4"><span>Teachers and teacher assistants can talk with </span><br><span>students privately without leaving the Zoom</span><br> environment.</h4>
+        </div>
+        <div id="ss_div2"><img src="/static/images/role.jpg" class="ss_img"></div>
+    </section>
+</div><br><br>
+<button id="ss_but"> See more features</button>
+
+<div id="seven" >
+<br><br>
+
+    <!--feedback-->
+    <section>
+        <div id="se_div1">
+        <div><img src="/static/images/feline.jpg" width="50px"> <span id="se_sp">Feedback</span></div>
+        <h1 id="fed1">WhatThey Say?</h1><br>
+            <h4 class="se_h4"><span>UCSY ClockWise has made scheduling and</span><br><span> communication more efficient for everyone.</span><br><span> From students to faculty, our users love how </span><br><span>easy it is to stay organized and up-to-date.</span></h4>
+            <br>
+            <h4 class="se_h4">Are you too? Please give your Feedback</h4><br>
+            <form method="POST" id="fedd" style="margin-top:-300px">
+    {% csrf_token %}
+    <input type="hidden" name="form_type" value="feedback">
+
+    <input type="hidden" name="user_email" value="{{ request.user.email }}">
+
+
+        <textarea name="feedback" placeholder="Write your Feedback here" style="" id="some2"></textarea><button type="submit" id="se_but"><img src="/static/images/arrow.jpg" id="fe_img"></button>
+
+
+    <br>
+
+</form>
+        </div>
+        <div id="se_div2"> <img src="/static/images/feed.jpg" id="feed_img">
+             &nbsp; <button id="nextFeedback" style=""> <img src="/static/images/arrgt.jpg" id="arrgt_img"> </button>
+             {% for feedback in feedbacks %}
+            <div class="feedback-item" style="display: none;">
+            <!-- Now first_name exists! -->
+                <div id="se_div3"><div id="feed_div"><span id="feedtext">{{ feedback.feedback }}</span><br><span id="fe_sp1">{{feedback.first_name}},{{request.session.role}}</span></div></div>
+           </div>
+
+        {% empty %}
+            <p>No feedback available yet.</p>
+        {% endfor %}
+</div><br><br><br><br><br><br><br><br>
+
+        <div id="eight">
+<section>
+
+
+<div class="subscription-section">
+
+    <div class="subscribe-content">
+
+        <div>
+          <br>  <div id="e_div"><span id="e_sp">UCSY Clockwise </span></div>
+            <div id="e_div1"> <span id="e_sp1">Your Timetable <br>Generator</span></div>
+      <br><br><h2 id="e_h2">Subscribe to get our Newsletter</h2>
+      </div>
+      <div class="subscribe-form">
+          <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="subscribe">
+        <input type="email"   name="email" placeholder=" Your email " required id="e_email">
+        <button type="submit" id="e_but">Subscribe</button>
+              </form>
+      </div>
+    </div><br><br>
+    <h4 id="e_h4">Careers&nbsp; <span style="color:rgba(98, 99, 129, 1);">|</span> &nbsp;Privacy Policy &nbsp;<span style="color:rgba(98, 99, 129, 1);">|</span> &nbsp;Terms & Conditions</h4>
+    <h6 id="e_h6">© 2025 UCSY CLOCK Wise Inc</h6>
+
+</div>
+
+
+
+</section>
+
+</div>
+
+
+
+
+
+
+
+    <!-- Navigation Arrows -->
+                  &nbsp;
+
+
+
+
+
+
+
+    </section>
+
+
+</div>
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let popup = document.getElementById("popup-message");
+    let popupText = document.getElementById("popup-text");
+    let closeButton = document.querySelector(".close-btn");
+
+    {% if messages %}
+        {% for message in messages %}
+            popupText.innerText = "{{ message }}";
+            popup.style.display = "block";
+        {% endfor %}
+    {% endif %}
+
+    // Close popup function
+    function closePopup() {
+        popup.style.opacity = "0";  // Fade out first
+        setTimeout(() => {
+            popup.style.display = "none";  // Hide after fade effect
+        }, 200);  // Adjust this timing for smoothness
+    }
+
+    // Attach event listener to close button
+    closeButton.addEventListener("click", closePopup);
+
+    // Close popup when clicking outside
+    window.onclick = function(event) {
+        if (event.target === popup) {
+            closePopup();
+        }
+    };
+});
+
+</script>
+<script>
+        document.getElementById('howItWorksButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('how-it-works').style.display = 'block';
+        });
+    </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let feedbackItems = document.querySelectorAll(".feedback-item");
+    let currentIndex = 0;
+
+    if (feedbackItems.length > 0) {
+        feedbackItems[currentIndex].style.display = "block";
+    }
+
+    document.getElementById("nextFeedback").addEventListener("click", function() {
+        if (feedbackItems.length > 0) {
+            feedbackItems[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % feedbackItems.length;
+            feedbackItems[currentIndex].style.display = "block";
+        }
+    });
+
+    document.getElementById("prevFeedback").addEventListener("click", function() {
+        if (feedbackItems.length > 0) {
+            feedbackItems[currentIndex].style.display = "none";
+            currentIndex = (currentIndex - 1 + feedbackItems.length) % feedbackItems.length;
+            feedbackItems[currentIndex].style.display = "block";
+        }
+    });
+});
+</script>
+<script>
+
+</script>
+<script>
+    let currentSlide = 0;
+
+    function autoSlide() {
+      const track = document.getElementById('sliderTrack');
+      currentSlide = (currentSlide + 1) % 2;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    setInterval(autoSlide, 3000); // Auto slide every 3 seconds
+  </script>
+</body>
+</html>

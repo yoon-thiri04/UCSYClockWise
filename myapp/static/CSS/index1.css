@@ -1,0 +1,231 @@
+    /* Header */
+
+    #firstone{
+    position:;
+    width:100%;
+     z-index: 999;
+     height:auto;
+     }
+
+     .header{
+
+        height: 80px;  /* Set a fixed height */
+        padding: 10px 20px; /* Reduce padding */
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Ensures vertical centering */
+        background-color: white;
+        border-bottom:0.3px solid grey;
+
+      }
+
+      .logo{
+        width: 50px;  /* Reduce size */
+        height: auto;
+        margin: 0;
+        margin-left:0.3%;
+        margin-top:-30px;/* Remove unnecessary margins */
+        }
+
+     #secondtwo{
+     font-family: Red Hat Display;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 30px;
+        letter-spacing: -1%;
+        color:rgba(81, 93, 239, 1);
+        margin-top:6px;
+        margin-left:-340px;
+        }
+
+    .nav{
+        display: ; /* Make nav items horizontal */
+        gap: 35px;
+         margin-top:5px;
+    }
+
+    #ff{
+        font-family: Red Hat Display;
+        font-weight: 40px;
+        font-size: 18px;
+        margin-left:-10%;
+        line-height: 23.81px;
+        letter-spacing: 5%;
+        display: inline-block;}
+        #ss{
+        font-family: Red Hat Display;
+        font-weight: 40px;
+        font-size: 18px;
+        line-height: 23.81px;
+        letter-spacing: 1%;}
+        #trr{
+        font-family: Red Hat Display;
+        font-weight: 40px;
+        font-size: 18px;
+        line-height: 23.81px;
+        letter-spacing: 1%;
+    }
+
+        #fou{
+        font-family: Red Hat Display;
+        font-weight: 40px;
+        font-size: 18px;
+        line-height: 23.81px;
+        letter-spacing: 1%;
+        }
+
+    .site-title {
+        font-family: 'Red Hat Display', sans-serif;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 30px;
+        color: rgba(81, 93, 239, 1);
+        margin-left: -450px;
+        margin-top: 10px;
+        }
+
+    .user-icon {
+    width: 30px;
+    height: 30px;
+    margin-top: -5px;
+    }
+
+    .header-spacing {
+    padding-top: 90px;
+    }
+
+    .nav {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    }
+
+    .nav a {
+        text-decoration: none;
+        color: #333 !important;
+        font-weight: bold;
+        font-family: 'Red Hat Display', sans-serif;
+        font-size: 18px;
+        line-height: 23.81px;
+        letter-spacing: 1%;
+    }
+
+    .tt:hover,
+    #tt1:hover {
+    color: rgba(38, 57, 237, 1);
+    }
+
+    /* Body */
+    body {
+    font-family: 'Poppins', sans-serif;
+    background-color: white;
+    }
+    .waving-hand{
+        margin-top:-50px;
+        width:72px;
+        height:72px;
+    }
+
+    .welcome-text {
+        font-size: 55px;
+        line-height: 70px;
+        font-weight: bold;
+        color: #343469;
+    }
+
+    .description {
+        font-size: 17px;
+        font-family: 'Red Hat Display', sans-serif;
+        padding-top: 2 0px;
+        color: #565656;
+        width: 622px;
+        height: 87px;
+        margin: auto;
+        line-height: 28.8px;
+        text-align: justify;
+    }
+
+    /* Semester Cards */
+    .semester-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #DFEEFF78;
+        border: 1px solid #C5CAFC;
+        border-radius: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .semester-card:hover {
+        color: #C5CAFC;
+        transform: scale(1.05);
+    }
+
+    .row > .col {
+        padding-right: 15px;
+        padding-left: 22px;
+        margin-bottom: 40px;
+    }
+
+    .semester-title {
+        font-weight: 500px;
+        font-family: 'Poppins';
+        font-size: 20px;
+        line-height: 36px;
+        color: #343969;
+    }
+
+    .semester-desc {
+        font-size: 14px;
+        line-height: 25px;
+        font-family: 'Red Hat Display', sans-serif;
+        color: #6c757d;
+    }
+
+    /* Buttons */
+    .btn-primary {
+        background-color: #00000033 !important;
+        border: 1px solid #C5CAFC !important;
+        border-radius: 10px;
+        width: 166px;
+        height: 42px;
+        padding: 0 31px;
+        color: white;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .btn-primary:hover {
+    background-color: #289F97 !important;
+    }
+
+    .btn-primary:focus,
+    .btn-primary:active {
+        background-color: #289F97 !important;
+        border-color: #C5CAFC !important;
+        box-shadow: none;
+        outline: none;
+    }
+
+    .back {
+        color: #343469;
+        width: 100px;
+        height: 43px;
+        background-color: white;
+        border: 1px solid #9294A9B2;
+        border-radius: 80px;
+        font-size: 15px;
+        padding: 10px;
+        padding-top: 6px;
+        margin-left: 100px !important;
+        margin-bottom: 50px;
+    }
+
+    .back:hover {
+        background-color: #3DC2B9;
+        color: white;
+        transform: scale(1.05);
+    }
+

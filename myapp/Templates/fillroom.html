@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UCSY ClockWise</title>
+
+</head>
+<body>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Room</title>
+    <link rel="stylesheet" href="/static/CSS/fillroom.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+{% extends "base1.html" %}
+{% load static %}
+<body>
+    {% block content %}
+    <form method="POST">
+    {% csrf_token %}
+        &nbsp;<h2 class="text-primary custom-text-color">Recent</h2>
+        &nbsp;<h1 class="text-primary custom-text-color">Timetables</h1><br>
+
+    <div style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" class="card shadow-sm p-4">
+            <h3 class="text-primary custom-text-color">
+                <img src="{% static 'images/Office.jpg' %}" alt="Class Icon" class="class-icon">Class/Groups
+            </h3>
+            <p class="text-muted custom-text-color">Add classes or groups or grades and assign class teachers.</p>
+
+            <div class="class-header">
+                <div>Name</div>
+                <div>Major</div>
+                <div id="action">Action</div>
+            </div><br>
+
+            <div id="classSectionsContainer">
+                <div class="row selectANDmatchSection mb-3">
+                    <div id="selectClassroomSection" class="col-md-4">
+                        <select required name="room_number_0" class="select-box">
+                            <option value="">Select</option>
+                            {% for classroom in classrooms %}
+                            <option value="{{ classroom.room_number }}">{{ classroom.room_number }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>&nbsp;
+                    <div id="multipleSelectmajorSection" class="col-md-4">
+                        <p class="select-major-toggle">Select one or more major</p>
+                        <div class="majorCheckboxContainer" style="display: none;">
+                                <div class="displayallmajor">
+                                    {% for major in majors %}
+                                        <input type="checkbox" class="majorCheckbox" name="major_0[]" value="{{ major.id }}">
+                                        <label style="padding-top: -10px !important;">{{ major.name }}</label><br>
+                                    {% endfor %}
+                                </div>
+                                <button type="button" class="doneBtn">Done</button>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 ms-auto custom-move" id="deleteBtnSection">
+                        <button type="button" class="deleteBtn">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+               <button type="button" class="btn btn-primary" id="addNewClassBtn">
+                     <img src="{% static 'images/plus.jpg' %}">
+                    <span>Add new class</span>
+               </button>
+    </div><br>
+
+         <div id="generateSection">
+            <button type="submit" class="nextBtn">>>  Next</button>
+        </div>
+</form>
+
+
+    <script>
+        let classIndex = 1;  // because 0 is already used
+
+        document.getElementById('addNewClassBtn').addEventListener('click', function() {
+            const container = document.getElementById('classSectionsContainer');
+            const original = document.querySelector('.selectANDmatchSection');
+            const clone = original.cloneNode(true); // clone the section
+
+            // Update the names for new inputs
+            const select = clone.querySelector('select');
+            select.name = `room_number_${classIndex}`;
+
+            const checkboxes = clone.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.name = `major_${classIndex}[]`;
+                checkbox.checked = false; // Uncheck all in the clone
+            });
+
+            const selectMajorToggle = clone.querySelector('.select-major-toggle');
+            const checkboxContainer = clone.querySelector('#majorCheckboxContainer');
+
+            if (selectMajorToggle) {
+                selectMajorToggle.textContent = 'Select one or more major';
+            }
+
+            if (checkboxContainer) {
+                checkboxContainer.style.display = 'none';
+            }
+
+            container.appendChild(clone);
+
+            classIndex++;
+        });
+
+        // Handle delete button
+        document.addEventListener('click', function(event) {
+            if (event.target.closest('.deleteBtn')) {
+                const section = event.target.closest('.selectANDmatchSection');
+                if (document.querySelectorAll('.selectANDmatchSection').length > 1) {
+                    section.remove();
+                }
+            }
+        });
+    </script>
+
+    <script>
+        // Show the checkbox list when the user clicks on "Select one or more major"
+        document.addEventListener("click", function(event) {
+        // Toggle majors
+        if (event.target.classList.contains("select-major-toggle")) {
+            const container = event.target.nextElementSibling;
+            container.style.display = container.style.display === "block" ? "none" : "block";
+        }
+
+            // Done button clicked
+            if (event.target.classList.contains("doneBtn")) {
+                const checkboxContainer = event.target.closest(".majorCheckboxContainer");
+                const selected = checkboxContainer.querySelectorAll('input[type="checkbox"]:checked');
+                const selectedMajors = Array.from(selected).map(cb => cb.nextElementSibling.textContent);
+
+                const toggleLabel = checkboxContainer.previousElementSibling;
+                toggleLabel.textContent = selectedMajors.length > 0 ? selectedMajors.join(", ") : "Select one or more major";
+
+                checkboxContainer.style.display = "none";
+            }
+        });
+        </script>
+
+    {% endblock %}
+</body>
+</html>

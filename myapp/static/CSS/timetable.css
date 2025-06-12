@@ -1,0 +1,142 @@
+
+               * {
+                    font-family: 'Poppins', sans-serif;
+                }
+              .timetableSection{
+              background-color: white;
+              border-radius:10px;
+              padding:20px;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+              }
+
+          h1 {
+            text-align: center;
+            padding-top: 20px !important;
+            font-size: 35px !important;
+            letter: 1%;
+            color:#343969;
+            }
+            .your {
+               font-weight: bold;
+                color:#343969;
+            }
+
+            .schedule {
+               font-weight: bold;
+               color:#343969;
+
+            }
+
+            .completed {
+                background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                color: transparent;
+                font-weight: bold;
+                }
+
+            .classroom-title{
+              font-size: 22px;
+              font-weight: 500px;
+              line-height:37.5px;
+              font-family: 'Poppins';
+              color: #343969;
+              letter: 1%;
+              }
+
+              img{
+                   margin-top: -8px;
+              }
+
+             p{
+                color:#565656;
+                font-size: 16px;
+                line-height: 28.8px;
+                align: justify;
+                font-family: 'Red Hat Display';
+                }
+
+              .timetable {
+                    width: 100%;
+                    border-collapse: collapse;
+                    text-align: center;
+                    font-family: 'Inter';
+                    margin: 0 auto;
+                    margin-bottom: 20px;
+                    background-color: #D9D9D9;
+                    table-layout: fixed; /* Ensures equal column width */
+                }
+
+                .timetable th, .timetable td {
+                    border: 1px solid white;
+                    padding: 8px;
+                    padding-top: 25px;
+                    padding-bottom: 10px;
+                    text-align: left;
+                    font-size: 11px;
+                    width: 13%;
+                    word-wrap: break-word;
+                    white-space: normal;
+                    vertical-align: top;
+
+                }
+
+                .timetable th, .timetable td {
+                    min-height: 70px;
+                }
+
+            .instructor{
+                color:#565656;
+                }
+
+            .instructor ul li {
+            line-height: 30px;
+            font-size: 15px;
+            }
+
+            h3{
+           color: #343969 !important;
+           font-size: 23px;
+           padding-left: 20px;
+           letter: 1% !important;
+            }
+
+         .downloadPdfBtn {
+          color: white;
+          background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+          font-size: 15px;
+          width: 130px;
+          height: 40px;
+          border-radius: 80px;
+          padding: 8px;
+          border: 1px solid #C5CAFC;
+          transition: background-color 0.3s, color 0.3s;
+        }
+
+         .downloadPdfBtn:hover{
+            background: linear-gradient(180deg, #21C8F6 0%, #637BFF 50%);
+            transition: background-color 0.3s, color 0.3s;
+            right: 0;
+            }
+
+         .editBtn{
+            width: 130px;
+            height: 40px;
+            border-radius: 80px;
+            border: none;
+            box-shadow: 0px 4px 4px 0px #00000040;
+            background-color: #FFFFFF;
+            background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                color: transparent;
+         }
+
+         .editBtn:hover{
+         border: 1px solid #C5CAFC;
+         }
+
+
+

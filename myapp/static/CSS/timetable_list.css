@@ -1,0 +1,172 @@
+
+        h1.timetable-header {
+            font-family: 'Poppins' !important;
+            font-size: 35px !important;
+            text-align: center !important;
+            font-weight: 700px !important;
+            color: #343969 !important;
+            padding-top: 15px !important;
+            padding-bottom: 20px !important;
+        }
+
+        h1.timetable-header span {
+           background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold !important;
+        }
+
+        h1.timetable-header img {
+            width: 50px !important;
+        }
+
+        .whole {
+            background-color: white;
+            border-radius: 15px;
+            line-height: 37.5px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            color: #343969;
+            font-weight: 500px;
+            font-size: 23px;
+            font-family: 'Poppins';
+        }
+
+        .title img {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .whole p {
+            font-family: 'Red Hat Display';
+            font-size: 16px;
+            font-weight: 400px;
+            letter-spacing: 0;
+            text-align: justify;
+            color: #565656;
+            padding-bottom: 0px;
+        }
+        .semester{
+        font-size: 17px;
+        font-weight: 600px;
+        color: #3DC2B9;
+        }
+
+        table.timetable-table {
+            width: 100%;
+            color: #343969;
+            border-collapse: collapse;
+            font-family: 'Inter';
+            font-size: 18px;
+        }
+
+        table.timetable-table thead {
+            background-color: #f2f2f2;
+            color: #343969;
+            opacity: 0.8;
+            font-weight: 300px;
+        }
+
+        table.timetable-table th,
+        table.timetable-table td {
+            padding: 10px;
+            font-family: 'Inter' !important;
+            font-size: 15px;
+        }
+
+        table.timetable-table th:first-child{
+            padding-left: 30px;
+            font-weight: 600px;
+        }
+
+        table.timetable-table td:first-child {
+            padding-left: 30px;
+            font-weight: 700px;
+            font-family: 'Inter' !important;
+
+        }
+
+        table.timetable-table th:last-child{
+            text-align: right;
+            padding-right: 30px;
+            font-weight: 600px;
+        }
+
+        table.timetable-table td:last-child {
+            text-align: right;
+            padding-right: 30px;
+            font-weight: 700px;
+            font-family: 'Inter' !important;
+
+        }
+
+        table.timetable-table td {
+            border-bottom: 1px solid #ddd;
+
+        }
+
+        .view-timetable-link {
+            text-decoration: none;
+            margin-right:-40px;
+            color: #5AA1FE;
+            font-size: 18px;
+            font-family: 'Inter';
+        }
+
+        .view-timetable-link:hover {
+            color: #343969 !important;
+        }
+        .link:hover{
+         color: #343969 !important;
+        }
+
+        .back {
+            color: white;
+            background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+            font-size: 16px;
+            width: 125px;
+            height: 40px;
+            border: 1px solid #C5CAFC;
+            border-radius: 80px;
+            padding-top: 8px;
+            padding-bottom: 11px;
+            padding-left: 17px;
+            padding-right: 17px;
+            margin-top: 20px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .back:hover {
+           background: linear-gradient(180deg, #21C8F6 0%, #637BFF 50%);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a{
+        text-decoration: none;
+        color: #5AA1FE;
+        font-family: 'Inter';
+
+        }
+
+        .add-btn{
+        font-size: 14.5px !important;
+        font-weight: 500px;
+        font-family: 'Inter';
+        padding-left: 30px;
+        color: #5AA1FE;
+        }
+
+        .add-btn:hover{
+        color: #343969 !important;
+        }
+
+        a:hover{
+        color: #343969 !important;
+        }

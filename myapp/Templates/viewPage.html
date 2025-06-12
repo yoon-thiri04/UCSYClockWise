@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCSY Timetable Management</title>
+    <link rel="stylesheet" href="/static/CSS/time1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/YOUR_KIT_CODE.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<style>
+
+
+</style>
+<body >
+<div  id="firstone" style="">
+    <header class="header" style="">
+        <div class="logo">&nbsp;&nbsp;<img src="/static/images/logo1.jpg" alt="Our Logo" width="60px;" style=" "></div>
+       <span id="secondtwo"  style="">UCSY ClockWise</span>
+        <nav class="nav" style="">
+            <a href="#first" id="ff"><b class="tt">Home</b></a>
+            <a href="#second" id="ss" style="
+"><b class="tt">What We Do</b></a>
+            <a href="#third" id="trr" style="
+"><b class="tt">Feedback</b></a>
+            <a href="#four" id="fou" style="
+" class="tt"><b >Subscribe</b></a>
+
+            <a href="{% url 'user-account' %}" class="tt1"><img src="/static/images/user.jpg" style="width:30px;height:30px; margin-top:3px;" class="tt"></a>
+            <a href="{% url 'log-out' %}" class="ms-auto" style="">
+                  <i class="fas fa-sign-out-alt fs-4" id="tt1"></i>
+            </a>
+        </nav>
+    </header>
+</div>
+<div id="first">
+    <section class="hero" style="margin-left:30px"><br>
+       <div><br><img src="/static/images/Group 70.jpg" id="headimg1" style="margin-top:330px"></div>
+
+        <div id="head1" style="margin-top:-550px">
+
+            <h2 id="sen1" style="font-family: 'Poppins', sans-serif;"><b>UCSY</b></h2>
+            <h2 id="sen2"><b>Timetable Management</b></h2>
+
+        <p id="fsen" style="margin-left:8px"> Easily generate and access university timetables. Admins &nbsp;can manage schedules effortlessly, and students can find &nbsp;their classes in just a few clicks.</p>
+
+        </div><br><br>
+        {% block content %}
+
+
+
+
+
+
+
+       <div class="circle"></div>
+
+        <div class="image-placeholder" ><img src="/static/images/Abacus.jpg" id="headimage"></div>
+ <div id="place" style="margin-left:30px;">
+     {% if user.is_authenticated %}
+<p></p>
+
+    {% if user.groups.all.0.name == "Instructor" %}
+
+        <button onclick="location.href='{% url 'teacher_view' instructor_id=user.id %}'" class="but" style="background-color:rgba(38, 57, 237, 1);color:white;border:none;font-size:20px;
+ margin-left:-970px;margin-top:-20px;border-radius:20px;">View</button>
+
+    {% elif user.groups.all.0.name == "Student" %}
+        {% if user.userprofile.semester.name == "Semester10" %}
+        <button onclick="location.href='{% url 'semester-ten' %}'" class="but" style="background-color:rgba(38, 57, 237, 1);color:white;border:none;font-size:20px;
+ margin-left:-970px;margin-top:-20px;border-radius:20px;font-size:15px;" onmouseout="this.style.backgroundColor='blue';this.style.transform='translateY(0px)';" onmouseover="this.style.transform='translateY(-3px)';">View My group</button>
+         {% elif user.userprofile.classroom %}
+        <button onclick="location.href='{% url 'classroom-timetable' semester_id=user.userprofile.semester.id classroom_id=user.userprofile.classroom.id %}'" class="but" style="background-color:rgba(38, 57, 237, 1);color:white;border:none;font-size:20px;
+ margin-left:-970px;margin-top:-20px;border-radius:20px;" onmouseout="this.style.backgroundColor='blue';this.style.transform='translateY(0px)';" onmouseover="this.style.transform='translateY(-3px)';">View</button>
+    {% else %}
+ <p>No classroom assigned.</p>
+    {% endif %}
+
+    {% endif %}
+{% endif %}
+    </div>
+        {% endblock %}
+
+       <img src="/static/images/Rectangle 23.jpg" id="headimg" style="margin-top:-10px;">
+
+
+
+    </section>
+</div>
+    <div id="second"></div>
+<br><br>
+<br>
+    <div  style="position:all">
+    <section id="how-it-works" style="margin-left:80px">
+           <img src="/static/images/re2.jpg" id="midre" style="margin-left:330px;">
+        <img src="/static/images/Ellipse 87.jpg" id="midre1">
+        <div id="head2" >
+
+            <h2 id="sen3">How It Works &ndash; <br>
+            Simple & Efficient!</h2>
+                <img src="/static/images/re1.jpg"id="midimg" style="height:190px">
+        <p id="p1">Easily access and manage timetables in just a few <br>steps.
+            Whether you are a student checking your<br> schedule or an admin organizing classes, our <br>system makes it simple and efficient.</p>
+<img src="/static/images/Group 70.jpg" id="midre2">
+        </div>
+
+
+        <div class="steps" style="margin-left:48%">
+               <div class="step">
+
+                <div class="image">
+                 <img src="/static/images/box-search 1.jpg" id="img1">
+                </div>
+                    <h3>Admin Creates Timetables</h3>
+                <p>Admins log in and enter course details, lecturers, and module slots.</p>
+            </div>
+            <div class="step" >
+                <div class="image1">
+                <img src="/static/images/Schedule.jpg" id="img2">
+                </div>
+                    <h3>Timetables Are Published Online</h3>
+                <p>Once finalized, timetables are instantly available for students.</p>
+            </div>
+            <div class="step">
+                <div class="image2">
+
+                <img src="/static/images/code-1 1.jpg" id="img3">
+                </div>
+                    <h3>System Optimizes & Prevents Conflicts</h3>
+                <p>The system auto-detects clashes and organizes a smooth schedule.</p>
+            </div>
+            <div class="step">
+                <div class="image3">
+                <img src="/static/images/chart-square 1.jpg" id="img4">
+                </div>
+                    <h3>Students View & Download</h3>
+                <p>Students search, view, and download their timetables anytime.</p>
+            </div>
+        </div>
+    </section></div><br><br><br><br>
+<div >
+    <section class="summary">
+
+        <div class="image-placeholder1"><img src="/static/images/Backpack.jpg" id="underre"></div>
+        <div id="head3">
+            <img src="/static/images/re3.jpg" id="underre1" style="height:210px">
+            <h2 ><b>Simplifying Timetables: A Seamless Experience</b></h2>
+        <p style="font-family:'Poppins', sans-serif;
+font-weight: 400;
+font-size: 18px;
+line-height: 28.8px;
+letter-spacing: 0%;
+text-align:justify;">The UCSY Timetable Maker makes it easy for both students and admins. Students can quickly view and download their semester schedules, while admins have the tools to create, modify, and duplicate class timetables with ease.</p>
+        </div>
+
+    </section>
+    </div>
+<div id="third">
+<br><br>
+
+    <!--feedback-->
+    <section id="fed">
+        <h1 id="fed1">What our student say</h1>
+        <p class="subtitle">Several selected clients, who already believe in our service.</p>
+<img src="/static/images/Dot.jpg" id="fedimg4" style="margin-top:-180px">
+       <div class="content" style="margin-left:80px;">
+
+           <img src="/static/images/profile.jpg" id="fedimg">
+           <img src="/static/images/Ellipse 94 (2).jpg" id="fedimg1">
+       </div>
+           <div id="fedpg" style="margin-left:420px;color:rgba(52, 57, 105, 1);margin-top:-280px;">
+               <div class="feedback-section">
+
+    <div id="feedback-container" style="width:50%;">
+        {% for feedback in feedbacks %}
+            <div class="feedback-item" style="display: none;">
+            <p id="feedtext1" style="font-style:Red Hat Display">{{ feedback.first_name }}</p>  <!-- Now first_name exists! -->
+                <div style="width:60%;height:90%;;"><span id="feedtext">"{{ feedback.feedback }}"</span></div>
+        </div>
+
+        {% empty %}
+            <p>No feedback available yet.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Navigation Arrows -->
+                   <button id="prevFeedback" style=" "><</button>
+                  &nbsp; <button id="nextFeedback" style=""> ></button>
+</div>
+
+           </div>
+
+        <img src="/static/images/Line 26.jpg" width="6px" height="360px" id="fedimg3" style="margin-top:-190px">
+<form method="POST" id="fedd" style="margin-top:-300px">
+    {% csrf_token %}
+    <input type="hidden" name="form_type" value="feedback">
+    <label style="color:rgba(52, 57, 105, 1);font-style:DM Sans">Additional Feedback</label><br>
+    <input type="hidden" name="user_email" value="{{ request.user.email }}">
+    <br>
+   <div style="" id="some1">
+        <textarea name="feedback" placeholder="If you have any additional feedback, please type it in here..."
+                  style="" id="some2"></textarea>
+    </div>
+    <br>
+    <div style="margin-top:-20px;">
+        <input type="checkbox">
+        <span style="color:rgba(111, 108, 144, 1);">I have read and accept the privacy</span><br>
+        <input type="submit" value="Submit" id="fedbut">
+    </div>
+</form>
+
+    </section>
+
+
+</div>
+<div id="four">
+<br><br><br>
+    <!-- Subscription Section -->
+
+<div class="subscription-section">
+    <img src="/static/images/Dot.jpg" id="sub">
+    <div class="subscribe-content">
+
+        <div id="head4">
+      <h2>Subscribe UCSYcw</h2>
+      <p>I will update good news and service, not spam</p>
+      </div>
+      <div class="subscribe-form">
+          <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="subscribe">
+        <input type="email"  style=" outline:none;padding-left:30px;" name="email" placeholder="Enter your email address" required />
+        <button type="submit">Subscribe Us</button>
+              </form>
+      </div>
+    </div>
+
+</div>
+
+
+    <img src="/static/images/re4.jpg" id="re1">
+
+</div>
+  <!-- Footer Section -->
+  <footer class="footer">
+      <div id="fot" style="">
+    <div class="footer-container">
+        <div id="fot1">
+      <div class="footer-column">
+          <h3 style="color:black;font-weight:bold;"><b>UCSYcw</b></h3>
+        <p>
+          Stay connected and organized with the UCSY Timetable Maker. Quickly
+          access your schedule, manage timetables, and stay updated anytime,
+          anywhere.
+        </p>
+        <div class="social-icons">
+          <a href="#"><img src="/static/images/facebook.jpg" alt="Facebook" /></a>
+          <a href="#"><img src="/static/images/twitter.jpg" alt="Twitter" /></a>
+          <a href="#"><img src="/static/images/linkedin.jpg" alt="LinkedIn" /></a>
+        </div><br>
+      </div>
+        </div>
+
+      <div class="footer-column1">
+          <h3 style="color:black;font-weight:bold;"><b>What We Do</b></h3>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">View Timetable</a></li>
+          <li><a href="#">Terms & Privacy</a></li>
+          <li><a href="#">Contact</a></li>
+
+        </ul>
+      </div>
+      <div class="footer-column1">
+          <h3 style="color:black;font-weight:bold;"><b>Support</b></h3>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Policy</a></li>
+          <li><a href="#">Business</a></li>
+        </ul>
+      </div>
+      <div class="footer-column1">
+          <h3 style="color:black;font-weight:bold;"><b>Contact</b></h3>
+        <ul>
+          <li><a href="#">Email</a></li>
+          <li><a href="#">Phone</a></li>
+        </ul>
+      </div>
+    </div>
+      </div>
+    <div class="footer-bottom">
+      &copy; 2025 UCSY ClockWise
+    </div>
+  </footer>
+
+
+<!-- Popup Message -->
+<div id="popup-message" class="popup" style="display: none;">
+    <div class="popup-content">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+        <p id="popup-text"></p>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let popup = document.getElementById("popup-message");
+    let popupText = document.getElementById("popup-text");
+    let closeButton = document.querySelector(".close-btn");
+
+    {% if messages %}
+        {% for message in messages %}
+            popupText.innerText = "{{ message }}";
+            popup.style.display = "block";
+        {% endfor %}
+    {% endif %}
+
+    // Close popup function
+    function closePopup() {
+        popup.style.opacity = "0";  // Fade out first
+        setTimeout(() => {
+            popup.style.display = "none";  // Hide after fade effect
+        }, 200);  // Adjust this timing for smoothness
+    }
+
+    // Attach event listener to close button
+    closeButton.addEventListener("click", closePopup);
+
+    // Close popup when clicking outside
+    window.onclick = function(event) {
+        if (event.target === popup) {
+            closePopup();
+        }
+    };
+});
+
+</script>
+<script>
+        document.getElementById('howItWorksButton').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('how-it-works').style.display = 'block';
+        });
+    </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    let feedbackItems = document.querySelectorAll(".feedback-item");
+    let currentIndex = 0;
+
+    if (feedbackItems.length > 0) {
+        feedbackItems[currentIndex].style.display = "block";
+    }
+
+    document.getElementById("nextFeedback").addEventListener("click", function() {
+        if (feedbackItems.length > 0) {
+            feedbackItems[currentIndex].style.display = "none";
+            currentIndex = (currentIndex + 1) % feedbackItems.length;
+            feedbackItems[currentIndex].style.display = "block";
+        }
+    });
+
+    document.getElementById("prevFeedback").addEventListener("click", function() {
+        if (feedbackItems.length > 0) {
+            feedbackItems[currentIndex].style.display = "none";
+            currentIndex = (currentIndex - 1 + feedbackItems.length) % feedbackItems.length;
+            feedbackItems[currentIndex].style.display = "block";
+        }
+    });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+{% extends "base5.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+{% block content %}
+<link rel="stylesheet" href="{% static 'CSS/merged_two.css' %}">
+   <h1 class="page-title">Smart <span class="highlight">Merge</span>  for Shared Subjects</h1>
+
+   <div class="title">
+    <h3><img src="{% static 'images/room.jpg' %}" class="class-icon">&nbsp;&nbsp;Choose the classrooms to merge</h3>
+    <p class="paragraph">You can <span class="select-text">select multiple<span></span> rooms for the associated that align with Head Merge</p>
+
+   </div><br>
+    <div class="part1">
+        <h5 class="line-text">Selected Head Merge</h5>
+
+        <div class="semester">
+        <h2 id="{{room.id}}">{{sem}}</h2>
+        <span class="room-number"> {{room.room_number}}</span>
+        </div>
+
+        <div class="subject">
+        <p id="{{subject.id}}" class="subject-head"><img src="{% static 'images/purple.jpg' %}" class="class-icon">&nbsp;&nbsp;Subject</p>
+        <span class="subject-name">{{subject.name}}</span>
+        </div>
+
+        <div class="instructor">
+        <p class="subject-head"><img src="{% static 'images/purple.jpg' %}" class="class-icon">&nbsp;&nbsp;Instructor Name</p>
+        <span class="subject-name">{{instructor}}</span>
+        </div>
+        {% if flag == True %}
+        <p class="text">This subject needs <span class="lab-room">lab-room</span>. Don't forget to select only one lab room.</p>
+        {% endif %}
+    </div><br>
+
+    <form method="POST">
+        {% csrf_token %}
+        {% for d in data %}
+        <div class="part2">
+            <h5 class="line-text">{{ d.sem }}</h5>
+            {% for c in d.classrooms %}
+                <div class="classroom-btn" data-id="{{ c.id }}" onclick="toggleClassroom(this)">
+                    {{ c.name }}
+                    <span class="close-icon">×</span>
+                </div>
+            {% endfor %}
+        </div><br>
+        {% endfor %}
+
+        <input type="hidden" name="selected_classrooms" id="selected_classrooms">
+
+        <div class="part3">
+            <h6 class="line-text">Manage instructors for merged Course</h6>
+            <p class="paragraph2">You can choose which instructor to keep or remove before finalizing the merge.</p>
+            <div id="instructors">
+
+                <div data-classroom-id="head">
+                    <input
+                        type="checkbox"
+                        name="{{ instructor }}   {{ room }}({{sem}})"
+                        value="{{ instructor_id }}"
+                        id="instructor-{{ instructor_id }}"
+                        data-classroom-id="head"
+                        class="instructor-name"
+                        checked>&nbsp;&nbsp;
+                    <label for="instructor-{{ instructor_id }}" class="instructor-name2"> {{ instructor }}</label>
+                    <label class="room-name">{{ room }} ({{sem}})</label>
+                </div>
+                    <img src="{% static 'images/person_g.jpg' %}" class="class-icon2">
+            </div>
+            <input type="hidden" name="selected_instructors" id="selected_instructors">
+        </div><br>
+
+        {% if flag == True %}
+        <div class="part4">
+            <h6 class="line-text">Manage Labs for merged Course</h6>
+            <p class="paragraph2">You can choose only one lab before finalizing the merge.</p>
+            <div id="lab-container">
+                <div data-classroom-id="head">
+                <input
+                    type="radio"
+                    name="lab"
+                    value="{{ lab.id }}"
+                    id="lab-{{ lab.id }}"
+                    class="instructor-name"
+                    required>
+
+                    <label for="lab-{{ lab.id }}" class="instructor-name2">{{ lab.room_number }}</label>
+                    <label class="room-name2">{{ room }} ({{sem}})</label>
+            </div>
+            </div>
+             <img src="{% static 'images/person_g.jpg' %}" class="class-icon2">
+            <input type="hidden" name="selected_labs" id="selected_labs">
+        </div>
+        {% endif %}
+
+        <br><button type="submit" class="merge-btn"> >>  Merge </button>
+    </form>
+
+<script>
+    let selectedClassrooms = [];
+    let selectedInstructors = [];
+
+    function toggleClassroom(button) {
+        const id = button.getAttribute("data-id");
+        const index = selectedClassrooms.indexOf(id);
+        const subjectId = document.getElementById("{{ subject.id }}").id;
+        const mainClsId = document.getElementById("{{ room.id }}").id;
+
+
+        if (index === -1) {
+            // === Classroom selected ===
+            selectedClassrooms.push(id);
+            button.classList.add("selected");
+
+            // === Fetch and display instructors ===
+            fetch(`/fetch-instructors/?classroom_id=${id}&subject_id=${subjectId}&main_cls_id=${mainClsId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('instructors');
+
+                    data.instructors.forEach(instructor => {
+                        const instructorId = String(instructor.id);
+                        const checkboxId = `instructor-${instructorId}`;
+
+                       // if (document.getElementById(checkboxId)) return; (duplicate avoidance)
+
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.name = `${instructor.first_name}   ${instructor.classroom_name}(${instructor.semester})`;
+                        checkbox.value = instructorId;
+                        checkbox.id = checkboxId;
+                        checkbox.setAttribute('data-classroom-id', id);
+                        checkbox.checked = true;
+
+                        selectedInstructors.push(instructorId);
+
+                        checkbox.addEventListener('change', function () {
+                            const id = String(this.value);
+                            if (this.checked) {
+                                if (!selectedInstructors.includes(id)) {
+                                    selectedInstructors.push(id);
+                                }
+                            } else {
+                                selectedInstructors = selectedInstructors.filter(i => i !== id);
+                            }
+                            document.getElementById("selected_instructors").value = selectedInstructors.join(",");
+                        });
+
+                        const label = document.createElement('label');
+                        label.innerText = `${instructor.first_name}   ${instructor.classroom_name}(${instructor.semester})`;
+
+                        const div = document.createElement('div');
+                        div.appendChild(checkbox);
+                        div.appendChild(label);
+                        container.appendChild(div);
+                    });
+
+                    document.getElementById("selected_instructors").value = selectedInstructors.join(",");
+                });
+
+            {% if flag == True %}
+            fetch(`/fetch-labs/?classroom_id=${id}&subject_id=${subjectId}&main_cls_id=${mainClsId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const labContainer = document.getElementById('lab-container');
+                    data.labs.forEach(lab => {
+                        const radioId = `lab-${lab.id}`;
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.name = 'lab';
+                        radio.value = lab.id;
+                        radio.id = radioId;
+                        radio.setAttribute('data-classroom-id', id);
+
+                        radio.addEventListener('change', () => {
+                            document.getElementById("selected_labs").value = lab.id;
+                        });
+
+                        const label = document.createElement('label');
+                        label.setAttribute('for', radioId);
+                        label.innerText = `${lab.name} ${lab.room}(${lab.sem})`;
+
+                        const div = document.createElement('div');
+                        div.setAttribute('data-classroom-id', id);
+                        div.appendChild(radio);
+                        div.appendChild(label);
+
+                        labContainer.appendChild(div);
+                    });
+                });
+            {% endif %}
+
+        } else {
+            // === Classroom deselected ===
+            selectedClassrooms.splice(index, 1);
+            button.classList.remove("selected");
+
+            const container = document.getElementById('instructors');
+            const checkboxes = container.querySelectorAll(`input[data-classroom-id="${id}"]`);
+
+            checkboxes.forEach(checkbox => {
+                const instructorId = checkbox.value;
+                selectedInstructors = selectedInstructors.filter(i => i !== instructorId);
+                const parentDiv = checkbox.parentElement;
+                if (parentDiv) container.removeChild(parentDiv);
+            });
+
+            document.getElementById("selected_instructors").value = selectedInstructors.join(",");
+
+            {% if flag == True %}
+            const labContainer = document.getElementById('lab-container');
+            const labDivs = labContainer.querySelectorAll(`div[data-classroom-id="${id}"]`);
+            labDivs.forEach(div => labContainer.removeChild(div));
+
+            const selectedLabId = document.getElementById("selected_labs").value;
+            const selectedRadio = document.querySelector(`input[name="lab"][value="${selectedLabId}"]`);
+            if (selectedRadio && selectedRadio.getAttribute('data-classroom-id') === id) {
+                document.getElementById("selected_labs").value = '';
+            }
+            {% endif %}
+        }
+
+        document.getElementById("selected_classrooms").value = selectedClassrooms.join(",");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const headCheckbox = document.querySelector('input[data-classroom-id="head"]');
+        if (headCheckbox && headCheckbox.checked) {
+            selectedInstructors.push(headCheckbox.value);
+            document.getElementById("selected_instructors").value = selectedInstructors.join(",");
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+    applyInputStyles();
+
+    document.addEventListener('change', function (e) {
+        if (e.target.type === 'checkbox' || e.target.type === 'radio') {
+            applyInputStyles();
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Apply styling when page loads
+    applyInputStyles();
+
+    // Monitor all future checkbox/radio changes
+    document.addEventListener('change', function (e) {
+        if (e.target.type === 'checkbox' || e.target.type === 'radio') {
+            applyInputStyles();
+        }
+    });
+});
+
+function applyInputStyles() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const radios = document.querySelectorAll('input[type="radio"]');
+
+    checkboxes.forEach(checkbox => {
+        const instructorLabel = document.querySelector(`label[for="${checkbox.id}"]`);
+        const roomLabel = checkbox.closest('div')?.querySelector('.room-name');
+
+        if (checkbox.checked) {
+            checkbox.style.accentColor = '#139AFB'; // Checkbox becomes blue
+            if (instructorLabel) instructorLabel.style.color = '#1B1B1B';
+            if (roomLabel) roomLabel.style.color = '#1B1B1B';
+        } else {
+            checkbox.style.accentColor = ''; // Revert to default
+            if (instructorLabel) instructorLabel.style.color = ''; // Revert
+            if (roomLabel) roomLabel.style.color = ''; // Revert
+        }
+    });
+
+    radios.forEach(radio => {
+        const labLabel = document.querySelector(`label[for="${radio.id}"]`);
+        const roomLabel = radio.closest('div')?.querySelector('.room-name');
+
+        if (radio.checked) {
+            radio.style.accentColor = '#139AFB'; // Radio becomes blue
+            if (labLabel) labLabel.style.color = '#1B1B1B';
+            if (roomLabel) roomLabel.style.color = '#1B1B1B';
+        } else {
+            radio.style.accentColor = ''; // Default color
+            if (labLabel) labLabel.style.color = '';
+            if (roomLabel) roomLabel.style.color = '';
+        }
+    });
+}
+
+</script>
+{% endblock %}
+</body>
+</html>

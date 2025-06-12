@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subscribe</title>
+</head>
+<body>
+{{ request.user.first_name }}
+
+<form method="POST">
+    {% csrf_token %}
+<input type="email" name="email" placeholder="Enter your email "> <br>
+    <input type="submit" value="Subscribe">
+</form>
+
+{% if subscribers %}
+{% for subscriber in subscribers %}
+<ul>
+    <li>{{ subscriber.email }}</li>
+</ul>
+
+{% endfor %}
+{% endif %}
+</body>
+</html>

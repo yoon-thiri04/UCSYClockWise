@@ -1,0 +1,340 @@
+         * {
+                font-family: 'Poppins', sans-serif;
+            }
+            html, body {
+                background-color: white !important;
+            }
+
+            /* Page Title */
+            .page-title {
+                font-size: 35px;
+                text-align: center;
+                font-weight: bold;
+                color: #343969;
+                padding-top: 20px;
+                margin-bottom: 40px;
+            }
+
+            .page-title .highlight {
+                background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                color: transparent;
+            }
+
+            .title{
+            width: 750px;
+            height: 110px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            border: 1px solid #CBD2D480;
+            box-shadow: 0px 1px 3px 0px #00000033;
+            background-color: white;
+            margin-left: 40px;
+            }
+
+            h3{
+             color: #343969;
+             font-size: 20px;
+             font-family: 'Poppins';
+             font-weight: 500px;
+             padding: 20px;
+            }
+
+             .paragraph{
+            text-align: justify;
+            font-family: 'Red Hat Display';
+            font-size: 14px;
+            font-weight: 400px;
+            line-height: 100%;
+            padding-left: 30px;
+            margin-top: -10px;
+            color: #5A5959;
+            }
+
+            .select-text{
+            font-weight: 500px;
+            }
+
+            .part1{
+            width: 750px;
+            height: 230px;
+            border: 1px solid #CBD2D480;
+            box-shadow: 0px 1px 3px 0px #00000033;
+            background-color: #FFFFFF;
+            margin-left: 40px;
+            }
+
+           .line-text{
+            font-size: 18px;
+            font-weight: 600px;
+            font-family: 'Poppins';
+            color: #343969;
+            padding-left: 10px;
+            padding-top: 30px;
+            display: flex;
+            align-items: center;
+            }
+
+           .line-text::before,
+            .line-text::after {
+              content: "";
+              border-top: 1px solid #E0E0E0;
+              margin: 0 5px;
+              margin-left: -10px;
+            }
+
+            .line-text::before {
+              flex: 0.05;
+            }
+
+            .line-text::after {
+              margin-left: 10px;
+              flex: 1;
+            }
+
+            .semester{
+            margin-left: 45px;
+            margin-top: 30px;
+            }
+
+            h2{
+            font-family: 'Manrope',sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            line-height: 35px;
+            letter-spacing: 0%;
+            color: #23262F;
+            }
+
+             .room-number{
+            color: #34C759;
+            font-family: 'Manrope',sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 35px;
+            letter-spacing: 0%;
+
+            }
+
+            .subject{
+            margin-top: -67px;
+            margin-left: 270px;
+            }
+
+            .subject-name{
+            color: #34C759;
+            font-family: 'Manrope',sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 100%;
+            letter-spacing: 0%;
+
+            }
+
+            .subject-head{
+            font-family: 'Manrope',sans-serif;
+            font-weight: 500px;
+            font-size: 14px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            color: #141414;
+            }
+
+            .instructor{
+             margin-top: -53px;
+             margin-left: 78%;
+            }
+
+            .text{
+            font-family: 'Red Hat Display';
+            font-weight: 400px;
+            font-size: 15px;
+            line-height: 160%;
+            letter-spacing: 0%;
+            text-align: justify;
+            color: #565656;
+            padding-left: 45px;
+            padding-top: 35px;
+
+            }
+
+            .lab-room{
+            color: #FB3C3C;
+            }
+
+            .part2{
+            width: 750px;
+            height: 130px;
+            border: 1px solid #CBD2D480;
+            box-shadow: 0px 1px 3px 0px #00000033;
+            background-color: white;
+            margin-left: 40px;
+            }
+
+            .classroom-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid #007BFF;
+                background-color: white;
+                color: #007BFF;
+                border-radius: 20px;
+                padding: 6px 12px;
+                font-weight: 400;
+                font-family: 'Inter';
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s, color 0.2s;
+                position: relative;
+                margin-left: 38px;
+                margin-top: 18px;
+                width: 82px;
+                height: 28px;
+                border-width: 0.5px;
+                gap: 5px;
+                border-radius: 80px;
+                padding-top: 3px;
+                padding-right: 4px;
+                padding-bottom: 3px;
+                padding-left: 4px;
+            }
+
+            .classroom-btn.selected {
+                background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+                color: white;
+            }
+
+            .close-icon {
+                display: none;
+                margin-left: 8px;
+                font-weight: bold;
+            }
+
+            .classroom-btn.selected .close-icon {
+                display: inline;
+            }
+
+            .part3{
+            width: 750px;
+            height: 227px;
+            border: 1px solid #CBD2D480;
+            box-shadow: 0px 1px 3px 0px #00000033;
+            background-color: white;
+            margin-left: 40px;
+            }
+
+           h6{
+           font-size: 18px;
+            font-weight: 600px;
+            font-family: 'Poppins';
+            color: #343969;
+            padding-left: 20px !important;
+            padding-top: 30px;
+            display: flex;
+            align-items: center;
+           }
+
+           .paragraph2{
+            font-family: 'Red Hat Display';
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 160%;
+            letter-spacing: 0%;
+            text-align: justify;
+            color: #565656;
+            padding-left: 30px;
+            padding-top: 15px;
+           }
+
+           .instructor-name{
+            font-family: 'Inter',sans-serif;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            vertical-align: middle;
+            color: #5A5A5A;
+            margin-left: 30px;
+            margin-top: 20px;
+
+           }
+
+           .instructor-name2{
+            font-family: 'Inter',sans-serif;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            vertical-align: middle;
+            color: #5A5A5A;
+            margin-top: 20px;
+
+           }
+
+           .room-name{
+            font-family: 'Inter',sans-serif;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            vertical-align: middle;
+            color: #5A5A5A;
+            margin-top: 20px;
+            margin-left: -10px !important;
+            padding-left: 65px;
+           }
+
+           .room-name2{
+            font-family: 'Inter',sans-serif;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            vertical-align: middle;
+            color: #5A5A5A;
+            margin-top: 20px;
+            margin-left: 110px !important;
+            padding-left: 65px;
+           }
+
+           .class-icon2{
+           margin-left: 80%;
+           margin-top: -50px;
+           width: 110px;
+           height: 110px;
+           }
+
+            .part4{
+            width: 750px;
+            height: 227px;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            border: 1px solid #CBD2D480;
+            box-shadow: 0px 1px 3px 0px #00000033;
+            background-color: white;
+            margin-left: 40px;
+            }
+
+            .merge-btn{
+            width: 125px;
+            height: 37px;
+            top: 1465px;
+            left: 1111px;
+            border: 1px solid #C5CAFC;
+            border-width: 1px;
+            border-radius: 80px;
+            padding: 15px;
+            padding-top: 5px;
+            color: white;
+            background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+            margin-left: 81.5%;
+            font-family: 'Poppins';
+            font-weight: 500px;
+            font-size: 16px;
+            }
+
+            .merge-btn:hover{
+            background: linear-gradient(180deg, #21C8F6 0%, #637BFF 50%);
+            }

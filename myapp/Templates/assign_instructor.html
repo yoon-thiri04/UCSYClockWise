@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+     <style>
+        /* Popup overlay */
+        .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+
+    .popup {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 400px;
+    }
+    .selected-teacher {
+        margin-bottom: 5px;
+    }
+    .selected-teacher span {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+
+.lab-select-item {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.instructor-radio {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.instructor-radio label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+
+}
+         .done-btn:hover{
+         background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+           }
+
+
+
+
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/static/CSS/assign_instructor2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+{% extends "base2.html" %}
+{% load static %}
+
+
+<body>
+{% block content %}
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <h2 id="head1">Assign <span class="w1">details</span> for each subject</h2>
+
+            <h6 id="he_h2">
+                Classrooms:
+                {% for r in rooms %}
+                    <label id="he_lb">{{ r.room_number }},
+
+                    </label>
+                {% endfor %}
+            <span id="he_sp"> Semester: {{request.session.semester}} </h6>
+
+            {% for course in courses %}
+            <div id="Each_Course_Section">
+                <h3 id="h3" style="font-size: 20px;"><img src="/static/images/bop.jpg">&nbsp;&nbsp;{{ course.name }}</h3>
+
+                <div id="Lab_required_or_not">
+
+                    {% if course.lab_required == True %}
+                    <div style="display:flex;gap: 270px;">
+                        <div style="margin-left:3%;">
+                        <label>Credit Hours Per Week</label>
+                        <input type="number" name="credit_hours_{{ course.course_id }}"
+                           class="credit-hours-input" min="1" max="5" required style="width:150%;display:grid">
+                        </div>
+                        <div>
+                        <label>Lab Credit Hours</label>
+                        <input type="number"
+                               id="lab-select-{{ course.course_id }}"
+                               name="lab_credit_hours_{{ course.course_id }}"
+                               class="credit-hours-input"
+                               min="1" max="5"
+                               required style="width:210%;display:grid"><br>
+                        </div>
+
+                    </div>
+                     <img src="/static/images/line.jpg" id="line_img">
+
+
+
+
+
+                   <div style="display:flex;">
+
+                       <div class="teacher_div">
+                <!-- Section of assigning  teachers-->
+               <h3 class="teach_h3" style="font-size: 18px;">Select teacher for this subject</h3>
+                {% for room in rooms %}
+                    {% for c in room.courses %}
+                        {% if c.course_id == course.course_id %}
+                           <img src="/static/images/roomlogo.jpg"> <label class="room_label">{{ room.room_number }}:</label>
+                            <div id="selected-teachers-{{ course.course_id }}-{{ room.room_number }}" >
+                                <input type="hidden" id="hidden-instructors-{{ course.course_id }}-{{ room.room_number }}" name="selected_instructors_{{ course.course_id }}_{{ room.room_number }}" value="">
+                            </div>
+
+                            <div id="btn-to-add-teacher-{{ course.course_id }}-{{ room.room_number }}" style="margin-top:-30px;margin-left:20%;">
+                                <button type="button" onclick="openPopup('{{ course.course_id }}', '{{ room.room_number }}')" class="add_but"><span class="add_span" style="margin-left:25px;">Add Teacher</span> <img src="/static/images/plus.jpg" class="plus_img"></button>
+                            </div>
+
+
+
+                            <!-- Popup for this specific course and room -->
+                            <div id="popup-overlay-{{ course.course_id }}-{{ room.room_number }}" class="popup-overlay" style="display: none;">
+                                <div class="popup">
+                                    <h4 class="teach_h4">Can select multiple</h4>
+                                    <h5 class="teach_h5">Departments and Teachers</h5>
+
+                                    <!-- Department select box -->
+                                    <select class="department-select" name="department_{{ course.course_id }}_{{ room.room_number }}" data-course="{{ course.course_id }}" data-room="{{ room.room_number }}" onchange="loadTeachers('{{ course.course_id }}', '{{ room.room_number }}')">
+                                        <option value="">Select Department</option>
+                                        {% for department in departments %}
+                                            <option value="{{ department.name }}">{{ department.name }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <!-- Container for instructor list -->
+                                    <div id="instructors_{{ course.course_id }}_{{ room.room_number }}" class="instructor-radio" style="margin-top: 15px;"></div>
+
+                                    <button type="button" class="done-btn" onclick="confirmInstructorSelection('{{ course.course_id }}', '{{ room.room_number }}')">Done</button>
+                                </div>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+
+
+             <div id="lab_div" >
+                 <h3 class="teach_h3" style="font-size: 18px;">Selected lab rooms for classes</h3>
+                          {% for room in rooms %}
+                    {% for c in room.courses %}
+                   {% if c.course_id == course.course_id %}
+
+                     <img src="/static/images/lablogo.jpg"> <label class="mb-0" id="lab_label">{{ room.room_number }}:</label>
+                      <select name="lab_{{ course.course_id }}_{{ room.room_number }}" class="form-select" style="width: auto;  min-width: 120px;margin-top:-30px;margin-left:150px;border-radius:13px;margin-bottom:10px;">
+                        <option value="">Select Lab</option>
+                        {% for l in labs %}
+                          <option value="{{ l.room_number }}">{{ l.room_number }}</option>
+                        {% endfor %}
+                      </select>
+
+                            {% endif %}
+                          {% endfor %}
+                        {% endfor %}
+                   </div>
+                   </div>
+
+
+                    {% else %}
+
+                        <div id="div2">
+                        <label class="credit_label">Credit Hours Per Week</label>
+                        <input type="number" name="credit_hours_{{ course.course_id }}"
+                           class="credit-hours-input" min="1" max="5" style="width: 45%;" required>
+                        </div>
+                        <div class="teacher_div">
+                <!-- Section of assigning  teachers-->
+               <h3 class="teach_h3">Select teacher for this subject</h3>
+                {% for room in rooms %}
+                    {% for c in room.courses %}
+                        {% if c.course_id == course.course_id %}
+                           <img src="/static/images/roomlogo.jpg"> <label class="room_label">{{ room.room_number }}:</label>
+                            <div id="selected-teachers-{{ course.course_id }}-{{ room.room_number }}" >
+                                <input type="hidden" id="hidden-instructors-{{ course.course_id }}-{{ room.room_number }}" name="selected_instructors_{{ course.course_id }}_{{ room.room_number }}" value="">
+                            </div>
+
+                            <div id="btn-to-add-teacher-{{ course.course_id }}-{{ room.room_number }}" style="margin-top:-30px;margin-left:20%;">
+                                <button type="button" onclick="openPopup('{{ course.course_id }}', '{{ room.room_number }}')" class="add_but"><span class="add_span" style="padding-left: 15px;">Add Teacher</span> <img src="/static/images/plus.jpg" class="plus_img"></button>
+
+                            </div>
+
+
+
+                            <!-- Popup for this specific course and room -->
+                            <div id="popup-overlay-{{ course.course_id }}-{{ room.room_number }}" class="popup-overlay" style="display: none;">
+                                <div class="popup">
+                                    <h4 class="teach_h4">Can select multiple </h4>
+                                    <h5 class="teach_h5">Departments and Teachers</h5>
+
+                                    <!-- Department select box -->
+                                    <select class="department-select" name="department_{{ course.course_id }}_{{ room.room_number }}" data-course="{{ course.course_id }}" data-room="{{ room.room_number }}" onchange="loadTeachers('{{ course.course_id }}', '{{ room.room_number }}')">
+                                        <option value="">Select Department</option>
+                                        {% for department in departments %}
+                                            <option value="{{ department.name }}">{{ department.name }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <!-- Container for instructor list -->
+                                    <div id="instructors_{{ course.course_id }}_{{ room.room_number }}" class="instructor-radio" style="margin-top: 15px;margin-left:10%;"></div>
+
+                                    <button type="button" class="done-btn" onclick="confirmInstructorSelection('{{ course.course_id }}', '{{ room.room_number }}')">Done</button>
+                                </div>
+                            </div>
+
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+                    {% endif %}
+
+        </div><br>
+
+    </div>
+            {% endfor %}
+
+             <!--<butt type="reset" id="b1" styl="border :1px solid  rgba(61, 194, 185, 1)"><span></span></butt>-->
+             <button type="submit" style="
+             background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+
+            color: white !important;
+            width: 95px;
+            height: 43px;
+            padding-top: 11px;
+            padding-bottom: 11px;
+            padding-left: 13px;
+            padding-right: 13px;
+            border-radius: 8px;
+            margin-left:86%;
+            border: 1px solid #9294A9B2;"
+             id="bb"> Generate </button>
+        </form>
+    </div>
+
+<script>
+ const selectedInstructorsMap = {};
+
+    function openPopup(courseId, roomNumber) {
+        const popup = document.getElementById("popup-overlay-" + courseId + "-" + roomNumber);
+        popup.style.display = "flex";
+
+        // Reset the department dropdown and instructor list
+        const departmentSelect = document.querySelector(`[data-course="${courseId}"][data-room="${roomNumber}"]`);
+        departmentSelect.selectedIndex = 0;
+
+        const instructorContainer = document.getElementById("instructors_" + courseId + "_" + roomNumber);
+        instructorContainer.innerHTML = ""; // Clear instructor container
+
+        // Initialize map entry if not already present
+        if (!selectedInstructorsMap[courseId]) {
+            selectedInstructorsMap[courseId] = {};
+        }
+        if (!selectedInstructorsMap[courseId][roomNumber]) {
+            selectedInstructorsMap[courseId][roomNumber] = {};
+        }
+
+    }
+
+    // Function to load instructors based on the selected department
+    // Function to load instructors based on the selected department
+function loadTeachers(courseId, roomNumber) {
+    const departmentSelect = document.querySelector(`[data-course="${courseId}"][data-room="${roomNumber}"]`);
+    const departmentName = departmentSelect.value;
+
+    const creditHoursInput = document.querySelector(`input[name="credit_hours_${courseId}"]`);
+    const creditHours = creditHoursInput ? creditHoursInput.value : null;
+
+    console.log("Department Name:", departmentName);
+    console.log("Credit Hours:", creditHours);
+
+    if (departmentName) {
+        fetch(`/get_instructors/?department_name=${departmentName}&credit_hours=${creditHours}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to fetch instructors");
+                return response.json();
+            })
+            .then(data => {
+                const instructorContainer = document.getElementById("instructors_" + courseId + "_" + roomNumber);
+                instructorContainer.innerHTML = ""; // Clear existing content
+                instructorContainer.classList.add("instructor-radio");
+
+                if (data.instructors && data.instructors.length > 0) {
+                    // Create a document fragment to append all items at once
+                    const fragment = document.createDocumentFragment();
+
+                    data.instructors.forEach((instructor, index) => {
+                        const label = document.createElement("label");
+                        label.style.display = "flex";
+                        label.style.alignItems = "center";
+                        label.style.gap = "6px";
+
+                        const radio = document.createElement("input");
+                        radio.type = "radio";
+                        radio.name = `instructors_${courseId}_${roomNumber}`;
+                        radio.value = instructor.id;
+                        radio.id = `radio-${courseId}-${roomNumber}-${instructor.id}`;
+
+                        radio.addEventListener("change", function () {
+                            if (this.checked) {
+                                selectedInstructorsMap[courseId] = selectedInstructorsMap[courseId] || {};
+                                selectedInstructorsMap[courseId][roomNumber] = {
+                                    id: instructor.id,
+                                    name: instructor.first_name
+                                };
+                                console.log("Selected:", selectedInstructorsMap[courseId][roomNumber]);
+                            } else {
+                                delete selectedInstructorsMap[courseId][roomNumber][instructor.id];
+                                console.log("Deselected:", instructor.id);
+                            }
+                        });
+
+                        const span = document.createElement("span");
+                        span.textContent = instructor.first_name;
+
+                        label.appendChild(radio);
+                        label.appendChild(span);
+
+                        fragment.appendChild(label);
+                    });
+
+                    instructorContainer.appendChild(fragment);
+                } else {
+                    instructorContainer.innerHTML = "<p>No instructors available</p>";
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching instructors:", error);
+            });
+    }
+}
+
+
+    // Function to update the display of selected instructors
+    function updateSelectedDisplay(courseId, roomNumber) {
+    const displayDiv = document.getElementById("selected-teachers-" + courseId + "-" + roomNumber);
+    const btnDiv = document.getElementById("btn-to-add-teacher-" + courseId + "-" + roomNumber);
+    displayDiv.innerHTML = ""; // Clear previous display
+
+    const selected = selectedInstructorsMap[courseId]?.[roomNumber];
+    if (selected) {
+        const div = document.createElement("div");
+        div.style.display = "flex";
+        div.style.justifyContent = "space-between";
+        div.style.alignItems = "center";
+        div.style.marginTop="-30px";
+
+        div.style.maxWidth = "310px";
+
+        const span = document.createElement("span");
+        span.textContent = selected.name + " ";
+
+        span.style.cssText = "margin-left:29%;font-size: 16px;line-height:100%;letter-spacing:1%;font-weight:400;font-family:'Inter',sans-serif;color:rgba(86, 86, 86, 1);";
+
+
+
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "❌";
+        removeBtn.style.color = "red";
+        removeBtn.style.cursor = "pointer";
+        removeBtn.style.border = "none";
+        removeBtn.style.background = "transparent";
+        removeBtn.addEventListener("click", function () {
+            delete selectedInstructorsMap[courseId][roomNumber];
+
+            const selectedRadio = document.querySelector(`input[name='instructors_${courseId}_${roomNumber}']:checked`);
+            if (selectedRadio) selectedRadio.checked = false;
+
+            updateSelectedDisplay(courseId, roomNumber); // Refresh
+
+            // ✅ Show the button back
+            if (btnDiv) btnDiv.style.display = "block";
+        });
+
+        div.appendChild(span);
+        div.appendChild(removeBtn);
+        displayDiv.appendChild(div);
+
+        // Update hidden input
+        const hiddenInput = document.getElementById("hidden-instructors-" + courseId + "-" + roomNumber);
+        if (hiddenInput) {
+            hiddenInput.value = selected.id;
+        }
+
+        // ✅ Hide the Add Teacher button
+        if (btnDiv) btnDiv.style.display = "none";
+    } else {
+        if (btnDiv) btnDiv.style.display = "block";
+    }
+}
+
+    function confirmInstructorSelection(courseId, roomNumber) {
+        const popup = document.getElementById("popup-overlay-" + courseId + "-" + roomNumber);
+        popup.style.display = "none";
+
+        // Only update the display after the "Done" button is clicked
+        updateSelectedDisplay(courseId, roomNumber);
+    }
+
+   function loadAvailableLabs(courseId, roomNumber) {
+    const creditHoursInput = document.querySelector(`input[name="lab_credit_hours_${courseId}"]`);
+    const creditHours = creditHoursInput ? creditHoursInput.value : null;
+
+    if (!creditHours) return;
+
+    const labSelect = document.querySelector(`select[name="lab_${courseId}_${roomNumber}"]`);
+    if (!labSelect || labSelect.dataset.loaded === "true") return;  // Already loaded
+
+    fetch(`/get_available_labs/?course_id=${courseId}&credit_hours=${creditHours}`)
+        .then(response => response.json())
+        .then(data => {
+            labSelect.innerHTML = `<option value="">Select Lab</option>`; // Reset
+
+            data.labs.forEach(lab => {
+                const option = document.createElement("option");
+                option.value = lab.room_number;
+                option.textContent = lab.room_number;
+                labSelect.appendChild(option);
+            });
+
+            labSelect.dataset.loaded = "true";  // Mark as loaded
+        })
+        .catch(error => {
+            console.error("Error loading labs:", error);
+        });
+}
+
+    document.querySelector("form").addEventListener("submit", function () {
+        for (const courseId in selectedInstructorsMap) {
+            for (const roomNumber in selectedInstructorsMap[courseId]) {
+                const selected = selectedInstructorsMap[courseId][roomNumber];
+                const hiddenInput = document.getElementById(`hidden-instructors-${courseId}-${roomNumber}`);
+                if (hiddenInput && selected) {
+                    hiddenInput.value = selected.id;
+                    console.log(`Set hidden input for ${courseId} ${roomNumber}:`, selected.id);
+                }
+            }
+        }
+    });
+
+
+</script>
+
+<script>
+
+</script>
+<script>
+function handleDone(courseId) {
+    const container = document.getElementById(`lab-group-container-${courseId}`);
+    const resultDiv = document.getElementById(`selected-data-${courseId}`);
+
+    resultDiv.innerHTML = ''; // Clear previous content
+    resultDiv.style.display = 'block'; // 👉 Show the div
+
+    if (container) {
+        const groups = container.querySelectorAll('.lab-group');
+        groups.forEach((group, index) => {
+            const labSelect = group.querySelector('select');
+            const labValue = labSelect.value;
+
+            const selectedRooms = Array.from(
+                group.querySelectorAll('input[type="checkbox"]:checked')
+            ).map(cb => cb.value);
+
+            const groupId = `group-${courseId}-${index}`;
+            const groupHTML = `
+                <div id="${groupId}" class="lab-room-block">
+                    <strong>Group ${index + 1}</strong><br>
+                    Lab: ${labValue || 'None'}<br>
+                    Rooms: ${selectedRooms.length ? selectedRooms.join(', ') : 'None'}<br>
+                    <button class="delete-btn" onclick="removeBlock('${groupId}')">❌</button>
+                    <hr>
+                </div>
+            `;
+            resultDiv.innerHTML += groupHTML;
+        });
+    } else {
+        const selects = document.querySelectorAll(`select[name^="lab_${courseId}_"]`);
+        selects.forEach((select, i) => {
+            const roomNumber = select.name.split('_')[2];
+            const labValue = select.value;
+            const blockId = `select-block-${courseId}-${roomNumber}`;
+
+            const itemHTML = `
+                <div id="${blockId}" class="lab-room-block">
+                    Room ${roomNumber}: ${labValue || 'None'}
+                    <button class="delete-btn" onclick="removeBlock('${blockId}')" style=" margin-left: auto; ">❌</button>
+                </div>
+            `;
+            resultDiv.innerHTML += itemHTML;
+        });
+    }
+}
+
+function removeBlock(id) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.remove();
+    }
+}
+
+</script>
+
+
+{% endblock %}
+</body>
+</html>

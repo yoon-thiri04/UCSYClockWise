@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+{% extends "base4.html" %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Timetable</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    {% block content %}
+     <link rel="stylesheet" href="{% static 'CSS/timetable.css' %}">
+    <h1>
+        <span class="your">Your</span> <span class="completed">Completed Timetable</span> <span class="schedule">Schedule</span>
+    </h1>
+
+    {% for room in classrooms %}
+    <br>
+    <div class="timetableSection">
+        <h4 class="classroom-title">
+            <img src="{% static 'images/Office.jpg' %}" alt="Class Icon" class="class-icon">
+            &nbsp;&nbsp;{{ room.classroom.room_number }} (<span class="majors">{% for major in room.classroom.majors %}{{ major }} {% endfor %}</span>)
+        </h4>
+        <p>This is the finalized timetable after generating the schedule, you can download it as a PDF file.</p>
+
+        <table class="timetable" id="table-{{ forloop.counter }}">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    {% for start_time in start_times %}
+                        <th>{{ start_time }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in room.schedule %}
+                    <tr>
+                        <td>{{ day.day }}</td>
+                        {% for course in day.courses %}
+                            <td>
+                                {{ course.course_name }} <br>
+                                {% if course.lab_name %}
+                                    <small>({{ course.lab_name }})</small>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="instructor">
+            <h3>Instructors</h3>
+            <ul class="instructor-list" id="instructors-{{ forloop.counter }}">
+                {% for instructor in instructors %}
+                    {% if instructor.classroom == room.classroom %}
+                        <li>{{ instructor.course_name }} - {{ instructor.instructor_name }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div><br>
+
+    <div style="display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 20px;">
+
+    <button class="downloadPdfBtn" data-id="{{ forloop.counter }}">
+        <i class="fa-solid fa-download"></i> Download
+    </button>
+
+    <!-- Edit Button -->
+    <a href="/swap_timetable/{{ room.classroom.id }}/{{ semester_id }}/">
+        <button class="editBtn">
+            <i class="fa-solid fa-pen-to-square"></i> Swap
+        </button>
+    </a>
+</div>
+
+    {% endfor %}
+
+    <script>
+    document.querySelectorAll('.downloadPdfBtn').forEach((button, index) => {
+        button.addEventListener('click', function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+            const id = this.getAttribute('data-id');
+            const table = document.getElementById('table-' + id);
+            const instructorList = document.getElementById('instructors-' + id);
+
+            const titleElement = document.querySelectorAll('.classroom-title')[index];
+            const classroomText = titleElement ? titleElement.innerText.trim() : 'Classroom: N/A';
+
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor('#343969');
+            doc.setFontSize(14);
+            doc.text(`Classroom: ${classroomText}`, 14, 15);
+
+            let tableStartY = 25;
+            let tableData = [];
+            let tableHeaders = [];
+
+            table.querySelectorAll('thead tr').forEach(tr => {
+                let rowData = [];
+                tr.querySelectorAll('th').forEach(th => {
+                    rowData.push(th.innerText.trim());
+                });
+                tableHeaders.push(rowData);
+            });
+
+            table.querySelectorAll('tbody tr').forEach(row => {
+                let rowData = [];
+                row.querySelectorAll('td').forEach(td => {
+                    rowData.push(td.innerText.trim());
+                });
+                tableData.push(rowData);
+            });
+
+            const numColumns = tableHeaders[0].length;
+            const totalTableWidth = 250;
+            const columnWidth = totalTableWidth / numColumns;
+
+            let columnStyles = {};
+            for (let i = 1; i < numColumns; i++) {
+                columnStyles[i] = { cellWidth: columnWidth };
+            }
+
+            doc.autoTable({
+                head: tableHeaders,
+                body: tableData,
+                startY: tableStartY,
+                theme: 'grid',
+                styles: {
+                    font: 'helvetica',
+                    fontSize: 10,
+                    cellPadding: 4,
+                    textColor: '#3A3A3A',
+                    valign: 'middle',
+                    halign: 'left',
+                    lineWidth: 0.3,
+                    lineColor: [200, 200, 200],
+                    fillColor: [240, 240, 240]
+                },
+                headStyles: {
+                    fillColor: [200, 200, 200],
+                    textColor: [0, 0, 0],
+                    fontStyle: 'bold',
+                    lineWidth: 0.3,
+                    lineColor: [200, 200, 200]
+                },
+                columnStyles: columnStyles,
+                tableLineColor: [200, 200, 200],
+                tableLineWidth: 0.3
+            });
+
+            let instructorY = doc.autoTable.previous.finalY + 15;
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor('#343969');
+            doc.setFontSize(13);
+            doc.text('Instructor:', 14, instructorY);
+
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor('#565656');
+            doc.setFontSize(11);
+            let bulletY = instructorY + 8;
+
+            const instructors = instructorList.querySelectorAll('li');
+            instructors.forEach(li => {
+                doc.text(`• ${li.innerText.trim()}`, 18, bulletY);
+                bulletY += 6;
+            });
+
+            doc.save(classroomText.replace("Classroom: ", "") + '_Timetable.pdf');
+        });
+    });
+    </script>
+{% endblock %}
+</body>
+</html>

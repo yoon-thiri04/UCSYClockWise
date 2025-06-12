@@ -1,0 +1,81 @@
+{% extends "base4.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Semester 10 Student Group View</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+{% block content %}
+<link rel="stylesheet" href="{% static 'CSS/semester_ten.css' %}">
+    <h2 class="page-title">
+        Welcome again <span class="highlighted">your group</span>
+        <img class="wave-img" src="{% static 'images/WavingHand.jpg' %}">
+    </h2>
+
+    <div class="container info-container">
+        <div class="user-info">
+            {% if user %}
+                <h4 class="user-name">
+                    <img class="user-profile" src="{% static 'images/user.jpg' %}">&nbsp;&nbsp;&nbsp;
+                    {{ user.first_name }} {{ user.last_name }}
+                </h4>
+            {% endif %}
+            {% if company_group %}
+                <h5 class="company-info">
+                    {{ company_group.company }} ({{ company_group.name }})
+                </h5>
+            {% endif %}
+        </div>
+
+        <div class="supervisor-info">
+            {% if supervisor %}
+                <h4 class="supervisor-name">
+                    <u>Supervisor</u><br>
+                    {{ supervisor.first_name }} {{ supervisor.last_name }}
+                    <span class="supervisor-email">{{ supervisor.email }}</span>
+                </h4>
+
+            {% endif %}
+        </div>
+    </div>
+    <br>
+
+    <div class="body-content">
+        <div class="group">
+            <h3 class="group-title">
+                <img src="{% static 'images/BuildingOffice.jpg' %}" alt="Class Icon" class="class-icon">
+                Group Members
+            </h3>
+        </div>
+
+            <table class="group-table">
+                <thead>
+                    <tr>
+                        <th><u>Name</u></th>
+                        <th><u>Email</u></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.first_name }} {{ student.last_name }}</td>
+                            <td>{{ student.email }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No students in this group.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+{% endblock %}
+</body>
+</html>

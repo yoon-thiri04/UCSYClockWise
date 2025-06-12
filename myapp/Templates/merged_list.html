@@ -1,0 +1,65 @@
+{% extends "base5.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+{% block content %}
+<link rel="stylesheet" href="{% static 'CSS/merged_list.css' %}">
+<h1 class="page-title">Smart <span class="highlight">Merge</span>  for Shared Subjects</h1>
+<div class="merge-one">
+    <h3><img src="{% static 'images/Office.jpg' %}" class="class-icon">&nbsp;Merge Head Classroom</h3><br>
+    <table class="timetable-table">
+        <thead>
+            <tr>
+                <th><u>CLASSROOM</u></th>
+                <th style="padding-left: 100px;"><u>SEMESTER</u></th>
+                <th style="padding-right: 60px;"><u>ACTION</u></th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ head.room_number }}</td>
+            <td style="padding-left: 100px;"> {{ semester }}</td>
+            <td>
+                <a href="{% url 'classroom-timetable' semester_id=semester.id classroom_id=head.id %}">View</a><br>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div><br>
+
+<div class="merge-two">
+    <h3><img src="{% static 'images/UsersThree.jpg' %}" alt="Class Icon" class="class-icon">&nbsp;&nbsp;Merged Classrooms</h3>
+    <p>This page displays a merge generated timetable for the classrooms.</p>
+        <table class="timetable-table">
+            <thead>
+                <tr>
+                    <th><u>CLASSROOM</u></th>
+                    <th style="padding-left: 100px;"><u>SEMESTER</u></th>
+                    <th style="padding-right: 60px;"><u>ACTION</u></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for room in rooms %}
+                <tr>
+                    <td> {{ room.room_number }} </td>
+                    <td style="padding-left: 100px;"> {{ room.semesters }} </td>
+                    <td>
+                        <a href="{% url 'classroom-timetable' semester_id=room.semesters.id classroom_id=room.id %}">View</a><br>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+</div>
+{% endblock %}
+</body>
+</html>

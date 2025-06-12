@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+{% load static %}
+
+{% block content %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swap Courses</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<link rel="stylesheet" href="{% static 'CSS/swap_timetable.css' %}">
+
+{% for room in classrooms %}
+    <div class="black-header"></div>
+    <div class="timetableSection">
+
+        <h4 class="classroom-title">
+            {{ room.classroom.room_number }}
+            (<span class="majors">
+                {% for major in room.classroom.majors %}{{ major }} {% endfor %}
+            </span>)
+        </h4>
+        <p>Select two course slots to swap within this room or across rooms.</p>
+
+        <table class="timetable" id="table-{{ forloop.counter }}">
+            <thead>
+                <tr style="background-color: white;color: #1C1B1F !important;font-family: IBM Plex Sans Condensed;
+                    font-weight: 600;
+                    font-size: 12px;
+                    line-height: 100%;
+                    letter-spacing: 0%;
+                    ">
+                    <th style="width: 7% !important;">Day</th>
+                    {% for start_time in start_times %}
+                        <th>{{ start_time }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in room.schedule %}
+                    <tr>
+                        <td style="background-color: white; width: 7%;font-family: IBM Plex Sans Condensed;
+                            font-weight: 600;
+                            font-size: 12px;
+                            line-height: 100%;
+                            letter-spacing: 0%;
+                            color: #1C1B1F;
+                            ">{{ day.day }}</td>
+                        {% for course in day.courses %}
+                            <td class="selectable"
+                                data-day="{{ day.day }}"
+                                data-time="{{ course.start_time }}"
+                                data-classroom-id="{{ room.classroom.id }}"
+                                data-course-id="{{ course.id|safe }}"
+                                data-instructor="{{ course.instructor }}">
+                                {{ course.course_name }}<br>
+                                {{ course.instructor }}<br>
+                                {% if course.lab_name %}
+                                    <small>({{ course.lab_name }})</small><br>
+                                {% endif %}
+                            </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+
+        <button onclick="location.href='{% url 'classroom-timetable' semester_id classroom_id %}'" class="btn-back"><< Back</button>
+
+        <p class="sign"><img src="{% static 'images/green.jpg' %}" class="class-icon">&nbsp;can swap &nbsp;&nbsp;&nbsp;
+            <img src="{% static 'images/gray.jpg' %}" class="class-icon">&nbsp;can't swap
+        </p>
+        <div id="swapModal" class="modal">
+            <div class="modal-content">
+                <p id="swapMessage">Are you sure you want to swap these courses?</p><br>
+                <button id="confirmSwap">Save</button><br>
+                <button id="cancelSwap">Cancel</button><br>
+                <button id="saveAndDone">Save and Done</button>
+            </div>
+        </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const allCells = document.querySelectorAll(".timetable td.selectable");
+    let firstSelectedSlot = null;
+    let secondSelectedSlot = null;
+    const modal = document.getElementById("swapModal");
+    const swapMessage = document.getElementById("swapMessage");
+
+    allCells.forEach(cell => {
+        cell.addEventListener("click", function () {
+
+            if (!firstSelectedSlot) {
+                resetSelections();
+                firstSelectedSlot = getSlotData(cell);
+                cell.classList.add('selected');
+                fetchSwappableSlots(firstSelectedSlot);
+            }
+
+            else if (cell.classList.contains('swappable')) {
+                secondSelectedSlot = getSlotData(cell);
+                showSwapConfirmation();
+            }
+
+            else if (cell.dataset.courseId === firstSelectedSlot.course_id) {
+                resetSelections();
+            }
+        });
+    });
+
+   function getSlotData(cell) {
+
+        const timeValue = cell.dataset.time.includes(':') ?
+            cell.dataset.time.split(':').slice(0, 2).join(':') :
+            cell.dataset.time;
+
+        return {
+            course_id: cell.dataset.courseId,
+
+            classroom_id: cell.dataset.classroomId,
+            day: cell.dataset.day,
+            time: timeValue,
+            instructor: cell.dataset.instructor || null,
+            element: cell
+        };
+    }
+
+    function fetchSwappableSlots(selectedSlot) {
+    const courseIds = JSON.parse(selectedSlot.course_id);
+    console.log(courseIds);
+    fetch(`/swap-options/?course_ids=${encodeURIComponent(JSON.stringify(courseIds))}&classroom_id=${selectedSlot.classroom_id}&day=${selectedSlot.day}&time=${selectedSlot.time}`)
+        .then(response => response.ok ? response.json() : Promise.reject(response))
+        .then(data => highlightSwappableSlots(data.swappable_slots))
+        .catch(error => console.error("Error:", error));
+}
+
+function highlightSwappableSlots(swappableSlots) {
+
+    document.querySelectorAll('.swappable').forEach(c => c.classList.remove('swappable'));
+
+    swappableSlots.forEach(slot => {
+        const selector =   `td[data-day="${slot.day}"][data-time="${slot.time}"][data-classroom-id="${slot.classroom_id}"]`;
+        const cell = document.querySelector(selector);
+
+        if (cell && cell.dataset.time !== "12:00:00") {
+            cell.classList.add('swappable');
+        }
+    });
+}
+
+    function showSwapConfirmation() {
+        swapMessage.textContent = `Are you sure you want to swap these courses?`;
+        modal.style.display = "block";
+    }
+
+    function resetSelections() {
+        document.querySelectorAll('.selected, .swappable').forEach(c => {
+            c.classList.remove('selected', 'swappable');
+        });
+        firstSelectedSlot = null;
+        secondSelectedSlot = null;
+    }
+
+    function performSwap(redirectAfter) {
+    const swapData = {
+        course1: firstSelectedSlot,
+        course2: secondSelectedSlot
+    };
+    console.log("This is First course",swapData);
+
+    console.log("Sending swap data:", JSON.stringify(swapData, null, 2));
+
+    console.log("2");
+    fetch("/confirm-swap/", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(swapData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(err => Promise.reject(err));
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            if (data.action === 'moved') {
+                // Course was moved to a free slot - full reload needed
+                location.reload();
+            } else {
+                // Normal swap - can update UI directly if desired
+                if(redirectAfter) {
+                    window.location.href = "{% url 'classroom-timetable' semester_id classroom_id %}";
+                } else {
+                   location.reload();
+                }
+            }
+        } else {
+            alert(`Operation failed: ${data.message}`);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert(`Error: ${error.message || 'Unknown error'}`);
+    });
+}
+    document.getElementById("confirmSwap").onclick = () => {
+        modal.style.display = "none";
+        performSwap(false);
+    };
+
+    document.getElementById("cancelSwap").onclick = () => {
+        modal.style.display = "none";
+        resetSelections();
+    };
+
+    document.getElementById("saveAndDone").onclick = () => {
+        modal.style.display = "none";
+        performSwap(true);
+    };
+});
+</script>
+</body>
+</html>
+{% endblock %}
+
+

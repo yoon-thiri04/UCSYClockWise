@@ -1,0 +1,253 @@
+
+           * {
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .black-header{
+            width: 100%;
+            height: 60px;
+            background: #161616;
+            }
+
+            .classroom-title{
+              color:  #161616;
+              font-family: 'IBM Plex Sans';
+              font-weight: 600;
+              font-size: 14px;
+              letter-spacing: 0.16px;
+              text-align: center;
+              margin-top: -5px;
+
+              }
+
+              .majors{
+                font-family: IBM Plex Sans;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 18px;
+                letter-spacing: 0.16px;
+                text-align: center;
+                color: #161616;
+              }
+
+             p{
+                color:#565656;
+                font-size: 16px;
+                line-height: 28.8px;
+                align: justify;
+                font-family: 'Red Hat Display';
+                text-align: center;
+                }
+
+
+            .instructor{
+            color:#565656;
+            }
+
+            .instructor ul li {
+            line-height: 30px;
+            font-size: 15px;
+            }
+
+            h3{
+           color: #343969 !important;
+           font-size: 23px;
+           padding-left: 20px;
+           letter: 1% !important;
+            }
+
+            .timetableSection{
+              background-color: white;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+              margin-top: -20px;
+              padding: 20px;
+              }
+
+          .timetable {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: center;
+                font-family: 'Inter';
+                margin: 0 auto;
+                margin-bottom: 20px;
+                background-color: #D9D9D9;
+                table-layout: fixed; /* Ensures equal column width */
+            }
+
+        .timetable th{
+            border: 1px solid #E0E0E0;
+            padding: 8px;
+            padding-top: 25px;
+            padding-bottom: 10px;
+            text-align: left;
+            width: 13%;
+            word-wrap: break-word;
+            white-space: normal;
+            vertical-align: top;
+            font-family: IBM Plex Sans Condensed;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            color: #1C1B1F;
+        }
+
+        .timetable td {
+            border: 1px solid #E0E0E0;
+            padding: 8px;
+            padding-top: 25px;
+            padding-bottom: 10px;
+            text-align: left;
+            width: 13%;
+            word-wrap: break-word;
+            white-space: normal;
+            vertical-align: top;
+            font-family: Poppins;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            color: #938C8C;
+
+        }
+
+        table.timetable td:nth-child(5),
+        table.timetable th:nth-child(5) {
+            background-color: white !important;
+        }
+
+
+        .timetable th, .timetable td {
+            min-height: 70px;
+        }
+
+        th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+        vertical-align: top;
+        }
+
+        td.selectable:hover {
+        background-color: #B8E1FF;
+        border: 1px solid #4A3990;
+        cursor: pointer;
+        font-family: 'IBM Plex Sans';
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 100%;
+        letter-spacing: 0%;
+        color: #4A3990
+
+        }
+
+        .swappable {
+        background-color: #E6F8DD !important;
+        border-top: 2px solid #8ED969 !important;
+        cursor: pointer;
+        }
+
+
+        td.selectable, td.swappable {
+        position: relative; /* Required for absolute positioning inside */
+        }
+
+        td.selectable:hover::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 6px;
+            height: 6px;
+            background-color: #139AFB; /* Blue */
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        td.swappable::after {
+            content: "";
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 6px;
+            height: 6px;
+            background-color: #8ED969 !important; /* Green */
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .modal {
+        display: none;
+        position: fixed;
+        top: 10%;
+        left: 33%;
+        background-color: #fff;
+        border: 1px solid #CBD2D480;
+        box-shadow: 0px 1px 3px 0px #00000033;
+        border-radius: 5px;
+        width: 400px;
+        height: 400px;
+        padding: 20px; z-index: 1000;
+        }
+
+        .modal-content{
+        border: 1px solid #E0E0E0;
+        margin-top: 40px;
+        padding: 30px;
+        }
+
+        .modal-content button {
+        margin: 10px;
+        width: 300px;
+        height: 40px;
+        border: 1px solid #CBD2D480;
+        box-shadow: 0px 1px 3px 0px #00000033;
+        border-radius: 5px;
+
+        }
+
+        .modal-content button:hover{
+         background-color: #B8E1FF;
+        }
+
+        .selected {
+         background-color: #bbdefb !important;
+         border: 2px solid blue;
+         }
+
+         .btn-back {
+                width: 100px;
+                color: white;
+                background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+                border-radius: 80px;
+                padding: 8px 16px;
+                border: 1px solid #C5CAFC;
+                font-size: 15px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+                margin-top: 10px;
+            }
+
+            .btn-back:hover {
+                color: white;
+                background: linear-gradient(180deg, #21C8F6 0%, #637BFF 50%);
+                transform: scale(1.05);
+            }
+
+            .sign{
+            margin-top: -35px;
+            margin-left: -250px;
+            font-family: IBM Plex Sans;
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 100%;
+            letter-spacing: 0%;
+
+            }
+
+
+
+
+
+
+

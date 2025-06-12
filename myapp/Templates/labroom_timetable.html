@@ -1,0 +1,97 @@
+{% extends "base4.html" %}
+{% load static %}
+
+{% block title %}Lab Room Timetable – {{ lab_name }}{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'CSS/labroom_timetable.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1 class="page-title">
+    Weekly <span class="highlight">Timetable</span> for {{ lab_name }}
+    <img src="{% static 'images/WavingHand.jpg' %}" class="wave-icon">
+  </h1>
+
+  <div class="whole">
+    <div id="weekly_lab_table" class="table-responsive">
+      <h4 class="title">
+        <img src="{% static 'images/Office.jpg' %}" class="class-icon">
+        {{ lab_name }}
+      </h4><br>
+
+      <!-- Give the table an id so autoTable can find it -->
+      <table id="table-labroom" class="timetable" border="1">
+        <thead>
+          <tr>
+            <th>Day</th>
+            {% for slot in slots %}<th>{{ slot }}</th>{% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for day in schedule %}
+            <tr>
+              <td>{{ day.day }}</td>
+              {% for room in day.room %}
+                <td class="room-cell">
+                  {{ room.room_number }}<br>
+                  {{ room.course }}<br>
+                  {{ room.semester }}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button onclick="location.href='{% url 'view-Page' %}'" class="btn-back"><< Back</button>
+        &nbsp;&nbsp;&nbsp;
+    <button id="downloadLabPdf" class="btn-download">
+      <i class="fa-solid fa-download"></i>&nbsp;Download
+    </button>
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+window.addEventListener('load', () => {
+  const { jsPDF } = window.jspdf;
+  if (typeof jsPDF !== 'function') {
+    return alert('jsPDF failed to load—check your includes.');
+  }
+
+  document.getElementById('downloadLabPdf').addEventListener('click', () => {
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    const table = document.getElementById('table-labroom');
+    const title = `Weekly Timetable – {{ lab_name }}`;
+
+    // Draw title
+    doc.setFont('helvetica', 'bold')
+       .setTextColor('#343969')
+       .setFontSize(14)
+       .text(title, 14, 15);
+
+    // Extract headers & rows
+    const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.innerText.trim());
+    const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr =>
+      Array.from(tr.querySelectorAll('td')).map(td => td.innerText.trim())
+    );
+
+    // Render the table in the PDF
+    doc.autoTable({
+      head: [ headers ],
+      body: rows,
+      startY: 25,
+      theme: 'grid',
+      styles: { fontSize: 10, cellPadding: 4 },
+      headStyles: { fillColor: [200,200,200], textColor: [0,0,0], fontStyle: 'bold' }
+    });
+
+    doc.save(`{{ lab_name|slugify }}_Timetable.pdf`);
+  });
+});
+</script>
+{% endblock %}

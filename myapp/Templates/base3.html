@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        :root {
+            --sidebar-width: 250px;
+            --header-height: 60px;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+       .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            z-index: 1050;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .search-box{
+            background: url("{% static 'images/searchicon.jpg' %}") no-repeat 50px center;
+            background-size: 16px;
+            padding-left: 80px;
+            max-width: 350px;
+            border:none;
+            }
+           .search-box input{
+           border:none;
+           }
+
+      .main-content {
+            margin-top: var(--header-height); /* Push content below navbar */
+        }
+        .logo img {
+            height: 40px;
+        }
+
+        .logo{
+        color: #343469;
+        font-weight: bold;
+
+        }
+        a:hov{
+        color:#289F97;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: white;
+            border-right: 1px solid #e9ecef;
+            z-index: 1000;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            flex-grow: 1;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: #495057;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-nav a:hov {
+            background-color: #f8f9fa;
+            color: #3DC2B9;
+        }
+
+        .nav-icon {
+            width: 20px;  /* Adjust icon size */
+            height: 20px;
+            margin-right: 10px; /* Space between icon and text */
+        }
+         img {
+              mix-blend-mode: multiply;
+            }
+
+        .sidebar-bottom {
+            padding-top: 1rem;
+            padding-bottom: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+#hh{
+display: inline-block;
+}
+#hh:hover{
+        color:rgba(61, 194, 185, 1);}
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar d-flex align-items-center">
+        <div class="logo">
+            <img src="/static/images/logo1.jpg" alt="Our Logo" style="margin-left:-30px;margin-top:-8px;width: 50px;
+height:auto;
+top: 35px;
+left: 22px;
+"></div>
+       <span style="font-family: Red Hat Display;
+font-weight: 700;
+font-size: 20px;
+line-height: 30px;
+letter-spacing: -1%;
+color:rgba(81, 93, 239, 1);
+margin-top:px;
+margin-left:3px;">UCSY ClockWise</span>
+        <form class="ms-1 search-box">
+    <input class="form-control" type="search" placeholder="Search..." aria-label="Search">
+</form>
+    </nav>
+    <div class="sidebar">
+        <div id="bb" >
+            <div class="sidebar-header">
+                <h4 class="mb-0">{{ request.user.first_name }}</h4>
+            </div>
+          <ul class="sidebar-nav">
+            <li >
+
+                <a href="#">
+
+                    <img src="{% static 'images/element-2 1.jpg' %}" alt="Home Icon" class="nav-icon" > <span style="">Classes</span>
+                </a>
+            </li>
+            <li >
+                <a href="#" >
+                  <img src="{% static 'images/element-2 1.jpg' %}" alt="Generated Icon" class="nav-icon">
+ <span style="">Subjects</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'images/element-2 1.jpg' %}" alt="Generated Icon" class="nav-icon"> Generated
+                </a>
+            </li>
+        </ul>
+        </div>
+
+        <div class="sidebar-bottom">
+            <ul class="sidebar-nav">
+                <li style="background-color:rgba(248, 248, 248, 1);;">
+                    <a href="{% url 'user-account' %}">
+                        <svg width="16" height="16" fill="currentColor" class="bi bi-person me-2" viewBox="0 0 16 16" style="color:rgba(61, 194, 185, 1)">
+                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        </svg>
+                        <span style="color:rgba(61, 194, 185, 1)">Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <svg width="16" height="16" fill="currentColor" class="bi bi-gear me-2" viewBox="0 0 16 16">
+                            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319z"/>
+                        </svg>
+                        Settings
+                    </a>
+                </li>
+                <li >
+                     <a href="{% url 'log-out' %}" class="ms-auto" onmouseover="this.style.color='rgba(61, 194, 185, 1)'" >
+                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" fill="currentColor" class="bi bi-gear me-2" ><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/></svg>
+                         <span id="hh"> Log out</span>
+            </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+body {
+    background-color: black !important;
+}
+  h1.text-primary.custom-text-color{
+            color: #343969 !important;
+            font-weight: bold;
+            padding-top:-10px;
+            padding-left: 15px;
+            margin-top: -20px;
+
+          }
+
+          h2.text-primary.custom-text-color{
+            color: #3DC2B9 !important;
+            font-weight: bold;
+            padding-top:-10px;
+            padding-left: 15px;
+            margin-top: -20px;
+          }
+
+        .custom-text-color {
+            color: #595959 !important;
+        }
+
+
+       .whole-body{
+        background-color: white !important;
+        border-radius: 10px;
+        padding: 20px;
+        }

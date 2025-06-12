@@ -1,0 +1,128 @@
+            * {
+                font-family: 'Poppins', sans-serif;
+            }
+
+            /* Page Title */
+            .page-title {
+                font-size: 35px;
+                text-align: center;
+                font-weight: bold;
+                color: #343969;
+                padding-top: 15px;
+            }
+
+            .page-title .highlight {
+                background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                color: transparent;
+            }
+
+            .wave-icon {
+                width: 50px;
+            }
+
+            .whole {
+                background-color: white;
+                margin: 10px;
+                margin-top: 30px;
+                padding: 40px;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+           .title {
+            color: #343969;
+            font-weight: 500px;
+            font-size: 23px;
+            font-family: 'Poppins';
+        }
+
+        .title img {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+            .teacher-name {
+                color: #343969;
+                font-size: 25px;
+                margin-left: 10px;
+                font-weight: bold;
+            }
+
+            /* Timetable */
+            .timetable {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: center;
+                font-family: 'Inter', sans-serif;
+                margin: 0 auto 20px;
+                background-color: #D9D9D9;
+                table-layout: fixed;
+            }
+
+            .timetable th,
+            .timetable td {
+                border: 1px solid white;
+                padding: 8px;
+                text-align: left;
+                font-size: 11px;
+                width: 13%;
+                word-wrap: break-word;
+                white-space: normal;
+                vertical-align: top;
+                min-height: 70px;
+            }
+
+            .room-cell {
+                padding-bottom: 10px;
+            }
+
+            .button-container {
+                display: flex;
+                justify-content: flex-end;
+                margin-right: 10px;
+                margin-top: 25px;
+            }
+
+            .btn-download {
+              color: white;
+              background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+              font-size: 15px;
+              width: 130px;
+              height: 40px;
+              border-radius: 80px;
+              padding: 8px;
+              border: 1px solid #C5CAFC;
+              transition: background-color 0.3s, color 0.3s;
+            }
+
+             .btn-download:hover{
+                background: linear-gradient(180deg, #21C8F6 0%, #637BFF 50%);
+                transition: background-color 0.3s, color 0.3s;
+                right: 0;
+                }
+
+            .btn-back {
+                color: #343469;
+                width: 100px;
+                background-color: white;
+                border: 1px solid #9294A9B2;
+                border-radius: 80px;
+                padding: 8px 16px;
+                border: 1px solid #C5CAFC;
+                font-size: 15px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+
+            }
+
+            .btn-back:hover {
+                color: white;
+                background: linear-gradient(180deg, #21C8F6 0%, #637BFF 100%);
+                transform: scale(1.05);
+            }
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapping each instructor to each class</title>
+</head>
+<body>
+    <form method="POST" action="{% url 'map' %}">
+        {% csrf_token %}
+        {% for room in classroom %}
+            <label>For {{room.room_number}}</label>
+            {% for course in courses %}
+                <div>
+                    <label >{{ course.name }}</label>
+                    {% for instructor in instrucors %}
+                        {% if instructor == course.instructor %}
+                             <input type="checkbox" name="instructor" value="{{ instructor.id }}" id="course_{{ instructor.id }}">
+                            <label>{{instructor.firstname}}</label>
+                        {% endif %}
+                    {% endfor %}
+                 </div>
+            {% endfor %}
+        {% endfor %}
+    </form>
+</body>
+</html>

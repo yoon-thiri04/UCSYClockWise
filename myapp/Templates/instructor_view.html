@@ -1,0 +1,102 @@
+{% extends "base4.html" %}
+{% load static %}
+
+{% block title %}Instructor Timetable{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'CSS/instructor_view.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1 class="page-title">
+    Weekly <span class="highlight">Timetable</span> for teachers
+    <img src="{% static 'images/WavingHand.jpg' %}" class="wave-icon">
+  </h1>
+
+  <div class="whole">
+    <div id="weekly_table">
+      <h4 class="title">
+        <i class="fas fa-user-circle icon-teacher"></i>
+        <span class="teacher-name">Tr. {{ first_name }}</span>
+      </h4><br>
+
+      <table id="table-instructor" class="timetable" border="1">
+        <thead>
+          <tr>
+            <th>Day</th>
+            {% for slot in slots %}
+              <th>{{ slot }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for day in schedule %}
+            <tr>
+              <td>{{ day.day }}</td>
+              {% for room in day.room %}
+                <td class="room-cell">
+                  {{ room.room_number }}<br>
+                  {{ room.course }}<br>
+                  {{ room.semester }}
+                </td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="button-container">
+    <button onclick="location.href='{% url 'view-Page' %}'" class="btn-back">&laquo; Back</button>
+    &nbsp;&nbsp;&nbsp;
+    <button id="downloadPdf" class="btn-download">
+      <i class="fa-solid fa-download"></i>&nbsp;Download
+    </button>
+  </div>
+{% endblock %}
+
+ {% block extra_scripts %}
+        <script>
+                window.addEventListener('load', () => {
+                  const { jsPDF } = window.jspdf;
+                  if (typeof jsPDF !== 'function') {
+                    return alert('jsPDF failed to load—check your includes.');
+                  }
+
+                  document.getElementById('downloadPdf').addEventListener('click', () => {
+                    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+                    const table = document.getElementById('table-instructor');
+                    const title = `Weekly Timetable – Tr. {{ first_name }}`;
+
+                    // Draw title
+                    doc.setFont('helvetica', 'bold')
+                       .setTextColor('#343969')
+                       .setFontSize(14)
+                       .text(title, 14, 15);
+
+                    // Grab headers
+                    const headers = Array.from(table.querySelectorAll('thead th'))
+                                         .map(th => th.innerText.trim());
+
+                    // Grab body rows
+                    const rows = Array.from(table.querySelectorAll('tbody tr')).map(tr =>
+                      Array.from(tr.querySelectorAll('td')).map(td => td.innerText.trim())
+                    );
+
+                    // Render autoTable
+                    doc.autoTable({
+                      head: [headers],
+                      body: rows,
+                      startY: 25,
+                      theme: 'grid',
+                      styles: { fontSize: 10, cellPadding: 4 },
+                      headStyles: { fillColor: [200,200,200], textColor: [0,0,0], fontStyle: 'bold' }
+                    });
+
+                    // Save it
+                    doc.save(`Tr_{{ first_name }}_Timetable.pdf`);
+                  });
+                });
+        </script>
+{% endblock %}

@@ -1,0 +1,102 @@
+        body {
+        background-color: #EDEDED;
+        }
+
+        .section-heading {
+        font-weight: bold;
+        font-size: 40px;
+        font-family: Poppins;
+        padding-left: 15px;
+        margin-left: 4px;
+        margin-top: -20px;
+        line-height: 60px;
+        }
+
+        .section-heading.accent {
+        color: #3DC2B9 !important;
+        }
+
+        .section-heading.primary {
+        color: #343969 !important;
+        }
+
+        .whole-body {
+        border-radius: 10px;
+        padding: 20px;
+        }
+
+        .header {
+        background-color: white;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 20px;
+        padding-bottom: 5px;
+        width: 100%;
+        margin-top: -15px;
+        margin-left: 4px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .semester-title {
+        color: #343969;
+        font-weight: bold;
+        font-size: 30px;
+        font-family: Poppins;
+        line-height: 40px;
+        }
+
+        .subtext {
+        color: #565656;
+        font-size: 18px;
+        font-family: Red Hat Display;
+        margin-top: 10px;
+        }
+
+        .company-section {
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: 100%;
+        margin-left: 4px;
+        margin-bottom: -3px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .company-title {
+        color: #343969DB;
+        font-size: 25px;
+        font-family: Poppins;
+        font-weight: bold;
+        }
+
+        .group-label {
+        display: inline-block;
+        color: #565656;
+        margin-right: 20px;
+        font-family: 'Red Hat Display', sans-serif;
+        font-size: 18px;
+        }
+
+        .next-button {
+        width: 105px;
+        height: 49px;
+        color: white;
+        border-color: 1px solid #C5CAFC;
+        background-color: #289F97;
+        border: none;
+        border-radius: 8px;
+        padding: 10px;
+        float: right;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .next-button:hover {
+        background-color: #3DC2B9;
+        }
+
+        .class-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+        vertical-align: middle;
+        }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .header {
+            display: flex;
+            top:0;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: white;
+
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo{
+        color: #343469;
+        font-weight: bold;
+
+        }
+
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .nav-menu a:hover {
+            color: #343969;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .ms-auto:hover{
+         color: #343969;}
+
+    </style>
+</head>
+{% load static %}
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'images/logo.jpg' %}" alt="Our Logo">
+        </div>
+        <nav class="nav-menu">
+            <a href="">Setting</a>
+            <a href="{% url 'user-account' %}" style="color: #808080;">
+               <i class="fas fa-user-circle fa-2x"></i>
+            </a>
+
+            <a href="{% url 'log-out' %}" class="ms-auto" style="color: #808080;">
+                   <i class="fas fa-sign-out-alt fs-4"></i>
+            </a>
+        </nav>
+    </header>
+
+    <div class="container">
+        {% block content %} {% endblock %}
+    </div>
+</body>
+</html>

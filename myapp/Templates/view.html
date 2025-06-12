@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/CSS/index1.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+ {% load static %}
+<body>
+<div  id="firstone" style="">
+    <header class="header" style="">
+        <div class="logo">&nbsp;&nbsp;<img src="/static/images/logo1.jpg" alt="Our Logo" width="60px;" style=" "></div>
+       <span id="secondtwo"  style="">UCSY ClockWise</span>
+        <nav class="nav" style="">
+            <a href="#first" id="ff"><b class="tt">Home</b></a>&nbsp;
+            <a href="#second" id="ss" style="
+"><b class="tt">What We Do</b></a>&nbsp;
+            <a href="#third" id="trr" style="
+"><b class="tt">Feedback</b></a>&nbsp;
+            <a href="#four" id="fou" style="
+" class="tt"><b >Subscribe</b></a>&nbsp;
+
+            <a href="{% url 'user-account' %}" class="tt1"><img src="/static/images/user.jpg" style="width:30px;height:30px; margin-top:-3px;" class="tt"></a>
+            <a href="{% url 'log-out' %}" class="ms-auto" style="">
+                  <i class="fas fa-sign-out-alt fs-4" id="tt1" style="margin-left:-20px;"></i>
+            </a>
+        </nav>
+    </header>
+</div>
+    {% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <div class="container mt-0">
+            <div class="col-md-6">
+                <h2 class="welcome-text">Welcome <br>Admin <img src="{% static 'images/WavingHand.jpg' %}" style="margin-top:-30px;width:72px;height:72px;"> </h2>
+                <p class="description">
+                    Select a semester from UCSY to generate the timetable. Easily create and manage class schedules with just a few clicks. Simplify the process and ensure a smooth timetable setup for each semester!
+                </p>
+            </div>
+
+
+            <div class="row row-cols-2 row-cols-md-5 g-5 mt-4">
+                {% for sem in sem %}
+                <div class="col">
+                    <div class="semester-card p-3 text-left w-100">
+                        <h5 class="semester-title">{{ sem.name }}</h5>
+                        <p class="semester-desc">All the subjects for  {{ sem.name }} (UCSY) are added.</p>
+                        {% if sem.timetable_schedule_set.all %}
+                        <a href="{% url 'timetable_list' semester_id=sem.id %}" class="btn btn-primary w-100" style="">View</a>
+                        {% else %}
+                        <button type="submit" name="semester" value="{{ sem.id }}" class="btn btn-primary w-100">Select</button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </form>
+<button onclick="location.href='{% url 'admin-home' %}'" class="back"><< Back</button>
+{% endblock %}
+
+</body>
+</html>
