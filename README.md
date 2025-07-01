@@ -6,6 +6,9 @@
 
 **Intelligent Timetable Generator for University of Computer Studies, Yangon (UCSY)**  
 
+🎨 [Explore our UIUX Design for UCSYClockWise](https://www.figma.com/design/rdQfykXAF34phCCkZ5r0rx/Untitled?t=u5K9ILcT4ytLc5dK-0)
+
+
 ## Overview  
 UCSYClockWise is an automated timetable generation system designed for UCSY to streamline the complex process of scheduling lectures, labs, and instructor assignments while adhering to university-specific constraints.
 
@@ -56,8 +59,4 @@ UCSYClockWise is an automated timetable generation system designed for UCSY to s
 
 ---
 
-## Check out our UIUX Design 
-```
-https://www.figma.com/design/rdQfykXAF34phCCkZ5r0rx/Untitled?t=u5K9ILcT4ytLc5dK-0
-```
 
