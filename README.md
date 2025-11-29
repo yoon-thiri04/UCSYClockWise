@@ -1,10 +1,10 @@
-# UCSY ClockWise ⏰
-
+# UCSYClockWise⏰
 ![Built with Django](https://img.shields.io/badge/Built%20With-Django-092E20?style=for-the-badge&logo=django&logoColor=white)
 
+> **“Intelligent Timetable Generator for University of Computer Studies, Yangon (UCSY)”** 🏛
 
-
-**Intelligent Timetable Generator for University of Computer Studies, Yangon (UCSY)**  
+****  
+<img width="1000" height="600" alt="ucsy" src="https://github.com/user-attachments/assets/43f85d73-e01c-44ac-bb08-c177334e8b4f" />
 
 🎨 [Explore our UIUX Design for UCSYClockWise](https://www.figma.com/design/rdQfykXAF34phCCkZ5r0rx/Untitled?t=u5K9ILcT4ytLc5dK-0)
 
